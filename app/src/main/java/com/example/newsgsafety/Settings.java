@@ -51,7 +51,7 @@ public class Settings extends AppCompatActivity {
         });
 
         loadData();
-        updateViews();
+        updateData();
     }
 
     public void saveData(){
@@ -76,7 +76,7 @@ public class Settings extends AppCompatActivity {
         checkFlood  = sharedPreferences.getBoolean(CHECK_FLOOD, true);
     }
 
-    public void updateViews(){
+    public void updateData(){
         mTemp.setChecked(checkTemp);
         mDengue.setChecked(checkDengue);
         mUltraViolet.setChecked(checkUV);
