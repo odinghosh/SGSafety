@@ -35,11 +35,11 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        mSaveBtn = findViewById(R.id.savebutton);
-        mTemp = findViewById(R.id.checkTemp);
-        mDengue = findViewById(R.id.checkDengue);
-        mUltraViolet = findViewById(R.id.checkUV);
-        mFlood = findViewById(R.id.checkFlood);
+        mSaveBtn        = findViewById(R.id.savebutton);
+        mTemp           = findViewById(R.id.checkTemp);
+        mDengue         = findViewById(R.id.checkDengue);
+        mUltraViolet    = findViewById(R.id.checkUV);
+        mFlood          = findViewById(R.id.checkFlood);
 
         mSaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,10 +70,10 @@ public class Settings extends AppCompatActivity {
 
     public void loadData(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
-        checkTemp = sharedPreferences.getBoolean(CHECK_TEMP, true);
+        checkTemp   = sharedPreferences.getBoolean(CHECK_TEMP, true);
         checkDengue = sharedPreferences.getBoolean(CHECK_DENGUE, true);
-        checkUV = sharedPreferences.getBoolean(CHECK_UV, true);
-        checkFlood = sharedPreferences.getBoolean(CHECK_FLOOD, true);
+        checkUV     = sharedPreferences.getBoolean(CHECK_UV, true);
+        checkFlood  = sharedPreferences.getBoolean(CHECK_FLOOD, true);
     }
 
     public void updateViews(){
