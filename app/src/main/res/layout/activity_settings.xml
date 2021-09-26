@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="false"
+    android:textAlignment="center"
+    tools:context=".Settings">
+
+  <ImageView
+      android:id="@+id/logo5"
+      android:layout_width="211dp"
+      android:layout_height="86dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/navbar4"
+      app:layout_constraintVertical_bias="0.0"
+      app:srcCompat="@drawable/sgsafetyedit" />
+
+  <ImageView
+      android:id="@+id/navbar4"
+      android:layout_width="match_parent"
+      android:layout_height="68dp"
+      android:background="@drawable/red_bar"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.0"
+      app:srcCompat="@drawable/red_bar" />
+
+  <ImageButton
+      android:id="@+id/settingsicon4"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="16dp"
+      android:background="@drawable/red_bar"
+      android:scaleType="fitXY"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/navbar4"
+      app:layout_constraintHorizontal_bias="0.95"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.0"
+      app:srcCompat="@drawable/settingsicon_white" />
+
+  <ImageButton
+      android:id="@+id/homeButton4"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="8dp"
+      android:background="@drawable/red_bar"
+      android:onClick="main"
+      android:scaleType="fitXY"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.05"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.0"
+      app:srcCompat="@drawable/homepageicon" />
+
+  <ImageButton
+      android:id="@+id/contactsButton4"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="8dp"
+      android:background="@drawable/red_bar"
+      android:onClick="contacts"
+      android:scaleType="fitXY"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.35"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.0"
+      app:srcCompat="@drawable/contacts_icon" />
+
+  <ImageButton
+      android:id="@+id/hazardsButton4"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="8dp"
+      android:background="@drawable/red_bar"
+      android:onClick="hazards"
+      android:scaleType="fitXY"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/navbar4"
+      app:layout_constraintHorizontal_bias="0.65"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.0"
+      app:srcCompat="@drawable/hazards_icon" />
+
+  <Button
+      android:id="@+id/logoutbutton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginBottom="16dp"
+      android:background="@drawable/btn_red"
+      android:onClick="logout"
+      android:text="Log Out"
+      android:textColor="@color/white"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.8"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/flooding" />
+
+  <Button
+      android:id="@+id/savebutton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="16dp"
+      android:background="@drawable/btn_red"
+      android:padding="10dp"
+      android:text="Save Changes"
+      android:textColor="@color/white"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.2"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/flooding" />
+
+  <ImageView
+      android:id="@+id/temperature"
+      android:layout_width="75dp"
+      android:layout_height="75dp"
+      android:layout_marginTop="16dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.25"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/detailbar"
+      app:layout_constraintVertical_bias="0.050000012"
+      app:srcCompat="@drawable/temperature_icon" />
+
+  <ImageView
+      android:id="@+id/dengue"
+      android:layout_width="75dp"
+      android:layout_height="75dp"
+      android:layout_marginTop="16dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.25"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/temperature"
+      app:layout_constraintVertical_bias="0.0"
+      app:srcCompat="@drawable/dengue_icon" />
+
+  <ImageView
+      android:id="@+id/ultraviolet"
+      android:layout_width="75dp"
+      android:layout_height="75dp"
+      android:layout_marginTop="16dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.25"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/dengue"
+      app:layout_constraintVertical_bias="0.0"
+      app:srcCompat="@drawable/ultraviolet_icon" />
+
+  <ImageView
+      android:id="@+id/flooding"
+      android:layout_width="75dp"
+      android:layout_height="75dp"
+      android:layout_marginTop="16dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.25"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/ultraviolet"
+      app:layout_constraintVertical_bias="0.01999998"
+      app:srcCompat="@drawable/flooding_icon" />
+
+  <CheckBox
+      android:id="@+id/checkTemp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="40dp"
+      android:layout_marginTop="32dp"
+      android:buttonTint="@color/design_default_color_error"
+      android:checked="true"
+      android:minHeight="48dp"
+      android:text="Temperature"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toEndOf="@+id/temperature"
+      app:layout_constraintTop_toBottomOf="@+id/detailbar"
+      app:layout_constraintVertical_bias="0.050000012" />
+
+  <CheckBox
+      android:id="@+id/checkDengue"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="40dp"
+      android:layout_marginTop="44dp"
+      android:buttonTint="@color/design_default_color_error"
+      android:checked="true"
+      android:minHeight="48dp"
+      android:text="Dengue"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toEndOf="@+id/dengue"
+      app:layout_constraintTop_toBottomOf="@+id/checkTemp"
+      app:layout_constraintVertical_bias="0.0" />
+
+  <CheckBox
+      android:id="@+id/checkUV"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="40dp"
+      android:layout_marginTop="44dp"
+      android:buttonTint="@color/design_default_color_error"
+      android:checked="true"
+      android:minHeight="48dp"
+      android:text="Ultra-Violet"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toEndOf="@+id/ultraviolet"
+      app:layout_constraintTop_toBottomOf="@+id/checkDengue"
+      app:layout_constraintVertical_bias="0.0" />
+
+  <CheckBox
+      android:id="@+id/checkFlood"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="40dp"
+      android:layout_marginTop="44dp"
+      android:buttonTint="@color/design_default_color_error"
+      android:checked="true"
+      android:minHeight="48dp"
+      android:text="Flooding"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toEndOf="@+id/flooding"
+      app:layout_constraintTop_toBottomOf="@+id/checkUV"
+      app:layout_constraintVertical_bias="0.0" />
+
+  <TextView
+      android:id="@+id/detailbar"
+      android:layout_width="match_parent"
+      android:layout_height="24dp"
+      android:layout_marginTop="23dp"
+      android:background="#FEFD98"
+      android:text="Please select the hazards you wish to see!"
+      android:textAlignment="center"
+      android:textColor="@color/black"
+      android:textStyle="normal"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/logo5"
+      app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,9 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_bg.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_grey.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_red.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/custom_image_button.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_contacts.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_hazards.xml" value="0.22" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_logout.xml" value="0.1796875" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_settings.xml" value="0.22" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_signup.xml" value="0.22" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/logout.xml" value="0.1796875" />
       </map>
@@ -16,5 +23,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.22" />
+      </ProjectState>
+    </option>
   </component>
 </project>
