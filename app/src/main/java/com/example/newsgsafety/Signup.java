@@ -22,7 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Signup extends AppCompatActivity {
@@ -107,6 +109,7 @@ public class Signup extends AppCompatActivity {
                             Map<String,Object> user = new HashMap<>();
                             user.put("username",username);
                             user.put("email",email);
+                            user.put("friend_list", new ArrayList());
                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
