@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if(task.isSuccessful()){
                                     DocumentReference document = task.getResult().getDocuments().get(0).getReference();
-                                    document.update("panic_request", location.getLatitude());
+                                    document.update("panic_request",FieldValue.arrayUnion(location.getLatitude() + " " + location.getLongitude()));
 
 
 
