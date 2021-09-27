@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NewSGSafety">
         <activity
+            android:name=".PanicLocation"
+            android:exported="true" />
+        <activity
             android:name=".Hazards"
             android:exported="true" />
         <activity

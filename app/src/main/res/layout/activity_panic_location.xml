@@ -4,25 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_centerVertical="false"
-    android:textAlignment="center"
-    tools:context=".MainActivity">
+    tools:context=".PanicLocation">
 
     <ImageView
-        android:id="@+id/navbar"
+        android:id="@+id/navbar5"
         android:layout_width="match_parent"
         android:layout_height="68dp"
         android:background="@drawable/red_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/red_bar" />
 
     <ImageButton
-        android:id="@+id/settingsicon"
+        android:id="@+id/settingsicon5"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -31,7 +29,7 @@
         android:onClick="settings"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/navbar"
+        app:layout_constraintEnd_toEndOf="@+id/navbar5"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -39,12 +37,13 @@
         app:srcCompat="@drawable/settingsicon" />
 
     <ImageButton
-        android:id="@+id/homeButton"
+        android:id="@+id/homeButton5"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/red_bar"
+        android:onClick="main"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +54,7 @@
         app:srcCompat="@drawable/homepageicon_white" />
 
     <ImageButton
-        android:id="@+id/contactsButton"
+        android:id="@+id/contactsButton5"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
@@ -64,7 +63,7 @@
         android:onClick="contacts"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/navbar"
+        app:layout_constraintEnd_toEndOf="@+id/navbar5"
         app:layout_constraintHorizontal_bias="0.35"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -72,7 +71,7 @@
         app:srcCompat="@drawable/contacts_icon" />
 
     <ImageButton
-        android:id="@+id/hazardsButton"
+        android:id="@+id/hazardsButton5"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -81,7 +80,7 @@
         android:onClick="hazards"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/navbar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.65"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -89,125 +88,58 @@
         app:srcCompat="@drawable/hazards_icon" />
 
     <ImageView
-        android:id="@+id/logo"
+        android:id="@+id/logo6"
         android:layout_width="211dp"
         android:layout_height="86dp"
+        android:layout_marginBottom="436dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/navbar"
+        app:layout_constraintTop_toBottomOf="@+id/navbar5"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/sgsafetyedit" />
 
     <TextView
-        android:id="@+id/description_banner"
+        android:id="@+id/description_banner2"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginTop="23dp"
         android:background="#FEFD98"
-        android:text="Welcome User!"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo"
+        app:layout_constraintTop_toBottomOf="@+id/logo6"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/panicButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/btn_red"
-        android:backgroundTint="#F80A0A"
-        android:text="Issue Panic Request"
-        android:textColor="@color/white"
-        android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/navbar"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="140dp"
-        android:layout_height="71dp"
-        android:layout_marginStart="16dp"
-        android:text="Panic Requests from Close Contacts:"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/panicButton"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/backButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintTop_toBottomOf="@+id/description_banner2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/backgroundButton"
-        android:layout_width="366dp"
-        android:layout_height="205dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/btn_grey"
-        android:paddingTop="120dp"
-        android:text="You are not exposed to any hazards!"
-        app:layout_constraintBottom_toTopOf="@+id/panicButton"
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Back to Home"
+        android:onClick="main"
+        android:background="@drawable/btn_red"
+        android:padding="20dp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/navbar" />
-
-    <ImageButton
-        android:id="@+id/iconButton"
-        android:layout_width="186dp"
-        android:layout_height="159dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/browser_actions_bg_grey"
-        android:elevation="2dp"
-        android:scaleX="0.5"
-        android:scaleY="0.5"
-        app:layout_constraintBottom_toTopOf="@+id/panicButton"
-        app:layout_constraintEnd_toEndOf="@+id/backgroundButton"
-        app:layout_constraintStart_toStartOf="@+id/backgroundButton"
-        app:layout_constraintTop_toBottomOf="@+id/navbar"
-        app:layout_constraintVertical_bias="0.40"
-        app:srcCompat="@drawable/safe_icon" />
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/contacts_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/panicButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/backgroundButton">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/userlink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="30px"
-                android:lineSpacingExtra="14sp"
-                android:text="odinghosh, son of SCSE"
-                android:onClick="paniclocation"
-                android:textAlignment="viewStart" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-
+        app:layout_constraintTop_toTopOf="@+id/navbar5"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
