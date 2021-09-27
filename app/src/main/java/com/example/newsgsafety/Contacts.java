@@ -14,10 +14,15 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.DocumentCollections;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -51,9 +56,21 @@ public class Contacts extends AppCompatActivity {
                 System.out.println("button pressed");
                 EditText contact = findViewById(R.id.contact_editor);
                 String user = contact.getText().toString();
-                db.update("friend_list", FieldValue.arrayUnion(user));
-                refresh();
-
+                CollectionReference userList = fStore.collection("users");
+                Query query = userList.whereEqualTo("username", user);
+                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            {
+                                if(task.getResult().getDocuments().size() > 0) {
+                                    db.update("friend_list", FieldValue.arrayUnion(user));
+                                    refresh();
+                                }
+                            }
+                        }
+                    }
+                });
             }
         });
         removeButton.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +127,30 @@ public class Contacts extends AppCompatActivity {
 
             }
         });
+    }
+
+
+    boolean valid = false;
+    public boolean validUser(String username){
+        valid = false;
+        CollectionReference db = fStore.collection("users");
+        Query query = db.whereEqualTo("username", username);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult() != null){
+                        valid = true;
+
+                    }
+
+                }
+
+            }
+        });
+
+        return valid;
+
     }
 
 
