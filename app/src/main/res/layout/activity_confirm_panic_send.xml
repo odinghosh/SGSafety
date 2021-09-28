@@ -1,16 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_centerVertical="false"
-    android:textAlignment="center"
-    tools:context=".Hazards">
+    tools:context=".ConfirmPanicSend">
+
+    <Button
+        android:id="@+id/backtoHazardButton5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_grey"
+        android:onClick="main"
+        android:padding="10dp"
+        android:text="Back To Home Page"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backtoHazardButton6"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <Button
+        android:id="@+id/backtoHazardButton6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/btn_red"
+        android:backgroundTint="#F80A0A"
+        android:padding="30dp"
+        android:text="Confirm"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.2" />
 
     <ToggleButton
-        android:id="@+id/toggleButton3"
+        android:id="@+id/toggleButton10"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
@@ -21,26 +56,26 @@
         android:scaleType="fitXY"
         android:textOff=""
         android:textOn=""
-        app:layout_constraintBottom_toTopOf="@+id/bannertext"
+        app:layout_constraintBottom_toTopOf="@+id/bannertext6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/logo3"
-        app:layout_constraintTop_toBottomOf="@+id/settingsicon2"
+        app:layout_constraintStart_toEndOf="@+id/logo11"
+        app:layout_constraintTop_toBottomOf="@+id/settingsicon10"
         app:layout_constraintVertical_bias="0.5" />
 
     <ImageView
-        android:id="@+id/logo3"
+        android:id="@+id/logo11"
         android:layout_width="211dp"
         android:layout_height="86dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/navbar2"
+        app:layout_constraintTop_toBottomOf="@+id/navbar10"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/sgsafetyedit" />
 
     <ImageView
-        android:id="@+id/navbar2"
+        android:id="@+id/navbar10"
         android:layout_width="match_parent"
         android:layout_height="68dp"
         android:background="@drawable/red_bar"
@@ -53,7 +88,7 @@
         app:srcCompat="@drawable/red_bar" />
 
     <ImageButton
-        android:id="@+id/settingsicon2"
+        android:id="@+id/settingsicon10"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -62,7 +97,7 @@
         android:onClick="settings"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/navbar2"
+        app:layout_constraintEnd_toEndOf="@+id/navbar10"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -70,7 +105,7 @@
         app:srcCompat="@drawable/settingsicon" />
 
     <ImageButton
-        android:id="@+id/homeButton2"
+        android:id="@+id/homeButton10"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -87,7 +122,7 @@
         app:srcCompat="@drawable/homepageicon" />
 
     <ImageButton
-        android:id="@+id/contactsButton2"
+        android:id="@+id/contactsButton10"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
@@ -98,21 +133,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.35"
-        app:layout_constraintStart_toStartOf="@+id/navbar2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/contacts_icon" />
 
     <ImageButton
-        android:id="@+id/hazardsButton2"
+        android:id="@+id/hazardsButton10"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:background="@drawable/red_bar"
+        android:onClick="hazards"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/navbar2"
+        app:layout_constraintEnd_toEndOf="@+id/navbar10"
         app:layout_constraintHorizontal_bias="0.65"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -120,12 +155,12 @@
         app:srcCompat="@drawable/hazards_icon_white" />
 
     <TextView
-        android:id="@+id/bannertext"
+        android:id="@+id/bannertext6"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginTop="23dp"
         android:background="#FEFD98"
-        android:text="Hazards (Click on each hazard to find out more)"
+        android:text="Confirmation to Send Panic Request"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textStyle="normal"
@@ -133,79 +168,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo3"
+        app:layout_constraintTop_toBottomOf="@+id/logo11"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ImageButton
-        android:id="@+id/tempButton"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/custom_image_button"
-        android:padding="10dp"
-        android:scaleType="fitXY"
-        android:onClick="temperature"
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Warning, your location will be disclosed\n to your close contacts, proceed?"
+        android:textAlignment="center"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45"
-        app:srcCompat="@drawable/temperature_icon" />
-
-    <ImageButton
-        android:id="@+id/dengueButton"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/custom_image_button"
-        android:padding="10dp"
-        android:scaleType="fitXY"
-        android:onClick="dengue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45"
-        app:srcCompat="@drawable/mosquito_icon" />
-
-    <ImageButton
-        android:id="@+id/uvButton"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/custom_image_button"
-        android:padding="10dp"
-        android:scaleType="fitXY"
-        android:onClick="UV"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
-        app:srcCompat="@drawable/ultraviolet_icon" />
-
-    <ImageButton
-        android:id="@+id/floodButton"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/custom_image_button"
-        android:padding="10dp"
-        android:scaleType="fitXY"
-        android:onClick="flood"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8"
-        app:srcCompat="@drawable/flooding_icon" />
-
+        app:layout_constraintTop_toBottomOf="@+id/bannertext6"
+        app:layout_constraintVertical_bias="0.1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

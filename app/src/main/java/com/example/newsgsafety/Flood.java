@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class Hazards extends AppCompatActivity {
+public class Flood extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hazards);
+        setContentView(R.layout.activity_flood);
     }
 
     public void main (View view){
@@ -34,23 +34,4 @@ public class Hazards extends AppCompatActivity {
         finish();
     }
 
-    public void temperature (View view){
-        startActivity(new Intent(getApplicationContext(),Temperature.class));
-        finish();
-    }
-
-    public void dengue (View view){
-        startActivity(new Intent(getApplicationContext(),Dengue.class));
-        finish();
-    }
-
-    public void UV (View view){
-        startActivity(new Intent(getApplicationContext(),UV.class));
-        finish();
-    }
-
-    public void flood (View view){
-        startActivity(new Intent(getApplicationContext(),Flood.class));
-        finish();
-    }
 }

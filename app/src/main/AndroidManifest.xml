@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.newsgsafety" >
+    package="com.example.newsgsafety">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +12,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
-        android:theme="@style/Theme.NewSGSafety" >
+        android:theme="@style/Theme.NewSGSafety">
+        <activity
+            android:name=".ConfirmPanicSend"
+            android:exported="true" />
+        <activity
+            android:name=".Flood"
+            android:exported="true" />
+        <activity
+            android:name=".Dengue"
+            android:exported="true" />
+        <activity
+            android:name=".Temperature"
+            android:exported="true" />
         <activity
             android:name=".UV"
             android:exported="true" />
@@ -36,7 +47,7 @@
             android:exported="true" />
         <activity
             android:name=".Login"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,11 +67,7 @@
 
         <service
             android:name=".MainActivity"
-            android:foregroundServiceType="location">
-
-        </service>
+            android:foregroundServiceType="location" />
     </application>
-
-
 
 </manifest>

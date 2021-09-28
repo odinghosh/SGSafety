@@ -231,9 +231,9 @@
 
             <TextView
                 android:id="@+id/textView4"
-                android:text="@string/random_text_1"
+                android:text=" You currently do not have any emergency contacts! "
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
                 android:lineSpacingExtra="14sp"
