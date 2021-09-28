@@ -12,18 +12,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-<<<<<<< HEAD
+
         android:theme="@style/Theme.NewSGSafety" >
         <activity
             android:name=".UV"
             android:exported="true" />
-=======
-        android:theme="@style/Theme.NewSGSafety">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDFX7LSF2aYMac6hHmAYxjLHLJ_SJQv6Ec" />
->>>>>>> ced8ef1d3948ac270acf8e3194566de4d47ec289
+
         <activity
             android:name=".PanicLocation"
             android:exported="true" />
