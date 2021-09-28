@@ -4,9 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_bg.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_green.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_grey.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_red.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_red_outline.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/custom_image_button.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/green_or_red_outline.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/green_or_red_shield.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/green_shield.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/safe_or_unsafe_text.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/show_less_or_more.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/toggle_location.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_contacts.xml" value="0.22" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_hazards.xml" value="0.22" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_login.xml" value="0.22" />
@@ -15,6 +23,7 @@
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_panic_location.xml" value="0.22" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_settings.xml" value="0.22" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_signup.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_uv.xml" value="0.1796875" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/logout.xml" value="0.1796875" />
       </map>
     </option>

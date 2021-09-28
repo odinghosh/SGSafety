@@ -6,6 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".PanicLocation">
 
+    <ToggleButton
+        android:id="@+id/toggleButton4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/toggle_location"
+        android:scaleType="fitXY"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toTopOf="@+id/description_banner2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/logo6"
+        app:layout_constraintTop_toBottomOf="@+id/settingsicon5"
+        app:layout_constraintVertical_bias="0.5" />
+
     <ImageView
         android:id="@+id/navbar5"
         android:layout_width="match_parent"
