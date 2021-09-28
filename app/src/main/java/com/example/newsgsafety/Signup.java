@@ -110,6 +110,7 @@ public class Signup extends AppCompatActivity {
                             user.put("username",username);
                             user.put("email",email);
                             user.put("friend_list", new ArrayList());
+                            user.put("panic_request", new ArrayList());
                             documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
