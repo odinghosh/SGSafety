@@ -183,10 +183,11 @@
         app:layout_constraintTop_toBottomOf="@+id/outlineIcon">
 
         <LinearLayout
+            android:id="@+id/panicrequests"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <!--
             <TextView
                 android:id="@+id/userlink"
                 android:layout_width="match_parent"
@@ -197,6 +198,7 @@
                 android:onClick="paniclocation"
                 android:text="odinghosh, son of SCSE"
                 android:textAlignment="viewStart" />
+                -->
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

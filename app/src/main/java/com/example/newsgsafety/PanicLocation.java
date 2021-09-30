@@ -80,23 +80,18 @@ public class PanicLocation extends FragmentActivity implements OnMapReadyCallbac
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        FirebaseAuth fAuth = FirebaseAuth.getInstance();
-        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-        DocumentReference db = fStore.collection("users").document(fAuth.getCurrentUser().getUid());
-        db.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot document = task.getResult();
-                    ArrayList<String> panic_requests = (ArrayList<String>)document.get("panic_request");
-                    double latitude = Double.parseDouble(panic_requests.get(0).split(" ")[0]);
-                    double longitude = Double.parseDouble(panic_requests.get(0).split(" ")[1]);
-                    LatLng sydney = new LatLng(latitude, longitude);
-                    mMap.addMarker(new MarkerOptions().position(sydney).title("Your location"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-                }
-            }
-        });
+        Bundle extras = getIntent().getExtras();
+        String panicDetails = extras.getString("panicDetails");
+
+
+
+        double latitude = Double.parseDouble(panicDetails.split(" ")[1]);
+        double longitude = Double.parseDouble(panicDetails.split(" ")[2]);
+        LatLng sydney = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Your location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+
     }
 }

@@ -1,6 +1,7 @@
 package com.example.newsgsafety;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -12,6 +13,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -25,8 +27,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
+    private boolean panicSent = false;
+    private String panicRequestSent;
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -80,12 +86,67 @@ public class MainActivity extends AppCompatActivity {
         panicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startLocationUpdates();
+                if(MainActivity.this.panicSent == false) {
+                    startLocationUpdates();
+                    MainActivity.this.panicSent = true;
+                }
 
 
 
             }
         });
+
+        Button cancelPanicButton = findViewById(R.id.cancelButton);
+        cancelPanicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DocumentReference db = fStore.collection("users").document(fAuth.getCurrentUser().getUid());
+                db.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            ArrayList<String> friendList = (ArrayList<String>)document.get("friend_list");
+                            String curUser = (String)document.get("username");
+                            for(int i=0; i < friendList.size(); i++){
+                                String username = friendList.get(i);
+                                CollectionReference userList = fStore.collection("users");
+                                Query query = userList.whereEqualTo("username", username);
+                                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            DocumentReference document = task.getResult().getDocuments().get(0).getReference();
+                                            document.update("panic_request",FieldValue.arrayRemove(panicRequestSent));
+
+                                        }
+                                    }
+                                });
+
+
+                            }
+
+                        }
+                    }
+                });
+
+                panicSent = false;
+
+            }
+        });
+
+
+        final DocumentReference docRef = fStore.collection("users").document(fAuth.getCurrentUser().getUid());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value != null && value.exists()){
+                    checkPanicRequests();
+                }
+            }
+        });
+
 
     }
 
@@ -122,6 +183,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void checkPanicRequests(){
+        DocumentReference db = fStore.collection("users").document(fAuth.getCurrentUser().getUid());
+        LinearLayout ll = (LinearLayout) findViewById(R.id.panicrequests);
+        ll.removeAllViews();
+        db.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    ArrayList<String> panicList = (ArrayList<String>)document.get("panic_request");
+                    for(int i=0; i < panicList.size(); i++){
+                        TextView panicRequest = new TextView(MainActivity.this);
+                        panicRequest.setText(panicList.get(i));
+                        panicRequest.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String panicDetails = ((TextView)view).getText().toString();
+                                startActivity(new Intent(getApplicationContext(), PanicLocation.class).putExtra("panicDetails",panicDetails));
+                                finish();
+
+                            }
+                        });
+                        LinearLayout ll = (LinearLayout) findViewById(R.id.panicrequests);
+                        ll.addView(panicRequest);
+                    }
+
+
+
+                }
+
+            }
+        });
+
+    }
     private void sendLocationAlert(Location location){
         DocumentReference db = fStore.collection("users").document(fAuth.getCurrentUser().getUid());
         db.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -130,6 +225,8 @@ public class MainActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                     ArrayList<String> friendList = (ArrayList<String>)document.get("friend_list");
+                    String curUser = (String)document.get("username");
+                    panicRequestSent = curUser + " " + location.getLatitude() + " " + location.getLongitude();
                     for(int i=0; i < friendList.size(); i++){
                         String username = friendList.get(i);
                         CollectionReference userList = fStore.collection("users");
@@ -139,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if(task.isSuccessful()){
                                     DocumentReference document = task.getResult().getDocuments().get(0).getReference();
-                                    document.update("panic_request",FieldValue.arrayUnion(location.getLatitude() + " " + location.getLongitude()));
+                                    document.update("panic_request",FieldValue.arrayUnion(panicRequestSent));
 
 
 
