@@ -14,11 +14,16 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -36,6 +41,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -161,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        checkUV();
 
     }
 
@@ -283,5 +291,45 @@ public class MainActivity extends AppCompatActivity {
         panicRequestSent   = sharedPreferences.getString(PANIC_REQUEST, "");
     }
 
+    public void checkUV(){
+        String url = "https://api.data.gov.sg/v1/environment/uv-index";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
 
+                        ImageView outline = findViewById(R.id.outlineIcon);
+                        ImageView shield = findViewById(R.id.shieldIcon);
+                        TextView warning = findViewById(R.id.textView3);
+                        try {
+                            JSONObject api_info = response.getJSONObject("api_info");
+                            String status = api_info.getString("status");
+                            //status = "unhealthy";   //for testing
+                            System.out.printf("\nstatus = %s\n", status);
+
+                            if (status.equals("healthy")){
+                                outline.setActivated(false);
+                                shield.setActivated(false);
+                                warning.setText("You are not exposed to any hazards!");
+                            }else{
+                                System.out.println(status);
+                                outline.setActivated(true);
+                                shield.setActivated(true);
+                                warning.setText("WARNING! Unhealthy UV levels!");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Toast.makeText(MainActivity.this, "UV code failed", Toast.LENGTH_SHORT);
+                    }
+                });
+
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
+    }
 }
