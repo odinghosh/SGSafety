@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
+        ToggleButton locationSharing = findViewById(R.id.toggleButton);
+
 
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(MainActivity.this.panicSent == false) {
                     startLocationUpdates();
+                    locationSharing.toggle();
                     MainActivity.this.panicSent = true;
                 }
 
@@ -100,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
         cancelPanicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(panicSent == true){
+                    locationSharing.toggle();
+                }
+
 
                 DocumentReference db = fStore.collection("users").document(fAuth.getCurrentUser().getUid());
                 db.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
