@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -43,7 +45,11 @@ public class MainActivity extends AppCompatActivity {
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private boolean panicSent = false;
-    private String panicRequestSent;
+    private String panicRequestSent = "";
+
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String PANIC_REQUEST = "panicLocation";
+
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -51,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        loadData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -160,21 +167,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void main (View view){
         startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        saveData();
         finish();
     }
 
     public void contacts (View view){
         startActivity(new Intent(getApplicationContext(),Contacts.class));
+        saveData();
         finish();
     }
 
     public void hazards (View view){
         startActivity(new Intent(getApplicationContext(),Hazards.class));
+        saveData();
         finish();
     }
 
     public void settings (View view){
         startActivity(new Intent(getApplicationContext(),Settings.class));
+        saveData();
         finish();
     }
 
@@ -209,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 String panicDetails = ((TextView)view).getText().toString();
                                 startActivity(new Intent(getApplicationContext(), PanicLocation.class).putExtra("panicDetails",panicDetails));
+                                saveData();
                                 finish();
 
                             }
@@ -259,4 +271,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    public void saveData(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PANIC_REQUEST, panicRequestSent);
+        editor.apply();
+    }
+
+    public void loadData(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+        panicRequestSent   = sharedPreferences.getString(PANIC_REQUEST, "");
+    }
+
+
 }
