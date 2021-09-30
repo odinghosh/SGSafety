@@ -302,17 +302,15 @@ public class MainActivity extends AppCompatActivity {
                         ImageView shield = findViewById(R.id.shieldIcon);
                         TextView warning = findViewById(R.id.textView3);
                         try {
-                            JSONObject api_info = response.getJSONObject("api_info");
-                            String status = api_info.getString("status");
-                            //status = "unhealthy";   //for testing
-                            System.out.printf("\nstatus = %s\n", status);
-
-                            if (status.equals("healthy")){
+                            JSONObject status = response.getJSONArray("items").getJSONObject(0).getJSONArray("index").getJSONObject(1); //change to 0 for datetime param
+                            int s = status.getInt("value");
+                            //s = 10;   //for testing
+                            System.out.printf("\ns = %d\n", s);
+                            if (s<8){
                                 outline.setActivated(false);
                                 shield.setActivated(false);
                                 warning.setText("You are not exposed to any hazards!");
                             }else{
-                                System.out.println(status);
                                 outline.setActivated(true);
                                 shield.setActivated(true);
                                 warning.setText("WARNING! Unhealthy UV levels!");
@@ -325,7 +323,6 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                         Toast.makeText(MainActivity.this, "UV code failed", Toast.LENGTH_SHORT);
                     }
                 });
