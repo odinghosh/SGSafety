@@ -1,5 +1,7 @@
 package com.example.newsgsafety;
 
+import static java.lang.Double.POSITIVE_INFINITY;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,14 +52,16 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
-    private LocationCallback locationCallback;
+    private LocationCallback alertLocationCallback;
+    private LocationCallback apiLocationCallback;
     private LocationRequest locationRequest;
     private boolean panicSent = false;
     private String panicRequestSent = "";
+    private Location locationData;
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String PANIC_REQUEST = "panicLocation";
-
+    private boolean[] bool_arr = {false, false, false, false};  //idx 0 = UV, idx 1 = flood, idx 2 = dengue, idx 3 = temperature
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -77,15 +81,39 @@ public class MainActivity extends AppCompatActivity {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(1000);
+        //startLocationUpdates();
 
-        locationCallback = new LocationCallback() {
+        alertLocationCallback = new LocationCallback() {
             public void onLocationResult(LocationResult locationResult){
                 if(locationResult == null){
                     return;
                 }
                 Location location = locationResult.getLastLocation();
+                MainActivity.this.locationData = location;
+
+
                 sendLocationAlert(location);
-                fusedLocationClient.removeLocationUpdates(locationCallback);
+
+
+
+                fusedLocationClient.removeLocationUpdates(alertLocationCallback);
+            }
+        };
+
+        apiLocationCallback = new LocationCallback() {
+            public void onLocationResult(LocationResult locationResult){
+                if(locationResult == null){
+                    return;
+                }
+                Location location = locationResult.getLastLocation();
+                MainActivity.this.locationData = location;
+
+
+                checkUV();
+                checkRain(location);
+
+
+                fusedLocationClient.removeLocationUpdates(apiLocationCallback);
             }
         };
 
@@ -105,9 +133,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(MainActivity.this.panicSent == false) {
-                    startLocationUpdates();
-                    locationSharing.toggle();
                     MainActivity.this.panicSent = true;
+                    startLocationUpdates(alertLocationCallback);
+
+                    locationSharing.toggle();
                 }
 
 
@@ -169,7 +198,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        checkUV();
+
+        //checkUV();
+        //checkRain();
+        startLocationUpdates(apiLocationCallback);
 
     }
 
@@ -202,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void startLocationUpdates() {
+    private void startLocationUpdates(LocationCallback locationCallback) {
         try {
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
         } catch (SecurityException e){
@@ -314,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
                                 outline.setActivated(true);
                                 shield.setActivated(true);
                                 warning.setText("WARNING! Unhealthy UV levels!");
+                                MainActivity.this.bool_arr[0] = true;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -329,6 +362,70 @@ public class MainActivity extends AppCompatActivity {
 
         MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
     }
+    public void checkRain(Location location){
+        //startLocationUpdates();
+        String url = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast";
+//        LocationResult locationResult = null;
+//        Location location = locationResult.getLastLocation();
 
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ImageView outline = findViewById(R.id.outlineIcon);
+                        ImageView shield = findViewById(R.id.shieldIcon);
+                        TextView warning = findViewById(R.id.textView3);
+
+                        try {
+                            double min_dist = 100000;;
+                            int index = 0;
+
+                            //TESTING
+                            double temp_lat = location.getLatitude();
+                            double temp_lon = location.getLongitude();
+
+                            for (int i = 0; i < 46; i++) {
+                                //System.out.printf("i = %d\n", i);
+                                String forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("forecasts").getJSONObject(i).getString("forecast");
+                                String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("forecasts").getJSONObject(i).getString("area");
+                                double lat = response.getJSONArray("area_metadata").getJSONObject(i).getJSONObject("label_location").getDouble("latitude");
+                                double lon = response.getJSONArray("area_metadata").getJSONObject(i).getJSONObject("label_location").getDouble("longitude");
+                                //s = 10;   //for testing
+                                System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
+
+                                if (Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon) < min_dist){ //find closest location to user
+                                    min_dist = Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon);
+                                    index = i;
+                                }
+                            }
+                            String closest_forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("forecasts").getJSONObject(index).getString("forecast");
+                            String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("forecasts").getJSONObject(index).getString("area");
+                            //closest_forecast = "Thundery Showers";    //test
+                            if (closest_forecast.equals("Thundery Showers")){
+                                System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
+                                outline.setActivated(true);
+                                shield.setActivated(true);
+                                warning.setText("WARNING! High chance of lightning and flooding!");
+                                MainActivity.this.bool_arr[1] = true;
+                            }else{
+                                System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
+                                outline.setActivated(false);
+                                shield.setActivated(false);
+                                warning.setText("You are not exposed to any hazards!");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "UV code failed", Toast.LENGTH_SHORT);
+                    }
+                });
+
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
+    }
 
 }
