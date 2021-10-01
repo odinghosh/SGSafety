@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity {
                             int s = status.getInt("value");
                             //s = 10;   //for testing
                             System.out.printf("\ns = %d\n", s);
-                            if (s<8){
+                            if (s<6){       //healthy UV levels
                                 outline.setActivated(false);
                                 shield.setActivated(false);
                                 warning.setText("You are not exposed to any hazards!");
@@ -329,4 +329,6 @@ public class MainActivity extends AppCompatActivity {
 
         MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
     }
+
+
 }
