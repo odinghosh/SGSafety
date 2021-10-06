@@ -87,6 +87,10 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ImageView outline = findViewById(R.id.outlineIcon);
+        ImageView shield = findViewById(R.id.shieldIcon);
+        TextView warning = findViewById(R.id.textView3);
+
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -124,8 +128,8 @@ public class MainActivity extends AppCompatActivity{
                 MainActivity.this.locationData = location;
 
 
-                //checkUV();
-                //checkRain(location);
+                checkUV();
+                checkRain(location);
                 checkDengue(location);
 
 
@@ -218,6 +222,8 @@ public class MainActivity extends AppCompatActivity{
         //checkUV();
         //checkRain();
         //checkDengue();
+        shield.setActivated(false);
+        outline.setActivated(false);
         startLocationUpdates(apiLocationCallback);
 
     }
@@ -356,9 +362,9 @@ public class MainActivity extends AppCompatActivity{
                             //s = 10;   //for testing
                             System.out.printf("\ns = %d\n", s);
                             if (s<6){       //healthy UV levels
-                                outline.setActivated(false);
-                                shield.setActivated(false);
-                                warning.setText("You are not exposed to any hazards!");
+                                //outline.setActivated(false);
+                                //shield.setActivated(false);
+                                //warning.setText("You are not exposed to any hazards!");
                             }else{
                                 outline.setActivated(true);
                                 shield.setActivated(true);
@@ -425,10 +431,10 @@ public class MainActivity extends AppCompatActivity{
                                 warning.setText("WARNING! High chance of lightning and flooding!");
                                 MainActivity.this.bool_arr[1] = true;
                             }else{
-                                System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
-                                outline.setActivated(false);
-                                shield.setActivated(false);
-                                warning.setText("You are not exposed to any hazards!");
+                                //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
+                                //outline.setActivated(false);
+                                //shield.setActivated(false);
+                                //warning.setText("You are not exposed to any hazards!");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -447,6 +453,10 @@ public class MainActivity extends AppCompatActivity{
 
     public void checkDengue(Location location){
 
+        ImageView outline = findViewById(R.id.outlineIcon);
+        ImageView shield = findViewById(R.id.shieldIcon);
+        TextView warning = findViewById(R.id.textView3);
+
 
         String url = "https://geo.data.gov.sg/dengue-cluster/2021/10/01/geojson/dengue-cluster.geojson";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -458,7 +468,12 @@ public class MainActivity extends AppCompatActivity{
                         for(GeoJsonFeature feature: g.getFeatures()){
                             LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
                             GeoJsonPolygon gpoly = (GeoJsonPolygon) feature.getGeometry();
-                            System.out.println(PolyUtil.containsLocation(l,gpoly.getCoordinates().get(0), true));
+                            if (PolyUtil.containsLocation(l,gpoly.getCoordinates().get(0), true)){
+                                shield.setActivated(true);
+                                outline.setActivated(true);
+                                warning.setText("Exposed to dengue");
+
+                            }
 
 
                         }
