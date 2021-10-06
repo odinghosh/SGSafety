@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,7 +33,11 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -43,13 +49,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.android.data.geojson.GeoJsonFeature;
+import com.google.maps.android.data.geojson.GeoJsonLayer;
+import com.google.maps.android.data.geojson.GeoJsonParser;
+import com.google.maps.android.data.geojson.GeoJsonPolygon;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity{
 
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback alertLocationCallback;
@@ -72,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         loadData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -109,8 +124,9 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.locationData = location;
 
 
-                checkUV();
-                checkRain(location);
+                //checkUV();
+                //checkRain(location);
+                checkDengue(location);
 
 
                 fusedLocationClient.removeLocationUpdates(apiLocationCallback);
@@ -201,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
         //checkUV();
         //checkRain();
+        //checkDengue();
         startLocationUpdates(apiLocationCallback);
 
     }
@@ -427,5 +444,38 @@ public class MainActivity extends AppCompatActivity {
 
         MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
     }
+
+    public void checkDengue(Location location){
+
+
+        String url = "https://geo.data.gov.sg/dengue-cluster/2021/10/01/geojson/dengue-cluster.geojson";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println(response.toString());
+                        GeoJsonParser g = new GeoJsonParser(response);
+                        for(GeoJsonFeature feature: g.getFeatures()){
+                            LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
+                            GeoJsonPolygon gpoly = (GeoJsonPolygon) feature.getGeometry();
+                            System.out.println(PolyUtil.containsLocation(l,gpoly.getCoordinates().get(0), true));
+
+
+                        }
+
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "UV code failed", Toast.LENGTH_SHORT);
+                    }
+                });
+
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
+
+    }
+
 
 }
