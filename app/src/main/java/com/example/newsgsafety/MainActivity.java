@@ -132,8 +132,7 @@ public class MainActivity extends AppCompatActivity{
                 checkUV();
                 checkRain(location);
                 checkDengue(location);
-
-
+                checkTemperature(location);
                 fusedLocationClient.removeLocationUpdates(apiLocationCallback);
             }
         };
@@ -486,6 +485,97 @@ public class MainActivity extends AppCompatActivity{
         MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
     }
 
+
+
+
+    public void checkTemperature(Location location){
+        //startLocationUpdates();
+        String url = "https://api.data.gov.sg/v1/environment/air-temperature";
+//        LocationResult locationResult = null;
+//        Location location = locationResult.getLastLocation();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ImageView outline = findViewById(R.id.outlineIcon);
+                        ImageView shield = findViewById(R.id.shieldIcon);
+                        TextView warning = findViewById(R.id.textView3);
+
+                        try {
+                            double min_dist = 100000;;
+                            int index = 0;
+
+                            //TESTING
+                            double temp_lat = location.getLatitude();
+                            double temp_lon = location.getLongitude();
+                            int len = response.getJSONArray("items").length();
+
+                            for (int i = 0; i < len; i++) {
+                                //System.out.printf("i = %d\n", i);
+                                //String forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("value");
+                                //String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("station_id");
+                                double lat = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getJSONObject("location").getDouble("latitude");
+                                double lon = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getJSONObject("location").getDouble("longitude");
+                                //s = 10;   //for testing
+                                //System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
+
+                                if (Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon) < min_dist){ //find closest location to user
+                                    min_dist = Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon);
+                                    index = i;
+                                }
+                            }
+                            double closest_forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(index).getDouble("value");
+                            String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(index).getString("station_id");
+                            closest_forecast = 35;    //test
+                            System.out.println(closest_forecast);
+                            if (closest_forecast > 30){
+                                //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
+                                outline.setActivated(true);
+                                shield.setActivated(true);
+                                warning.setText("WARNING! High chance of heat stroke!");
+                                MainActivity.this.bool_arr[1] = true;
+
+                                LinearLayout hazardList = findViewById(R.id.hazardList);
+                                ImageView newButton = new ImageView(MainActivity.this);
+                                newButton.setImageResource(R.drawable.temperature_icon);
+                                newButton.setAdjustViewBounds(true);
+                                newButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        startActivity(new Intent(getApplicationContext(),Temperature.class));
+                                        saveData();
+                                        finish();
+
+                                    }
+                                });
+                                hazardList.addView(newButton);
+                            }else{
+                                //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
+                                //outline.setActivated(false);
+                                //shield.setActivated(false);
+                                //warning.setText("You are not exposed to any hazards!");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "UV code failed", Toast.LENGTH_SHORT);
+                    }
+                });
+
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
+    }
+
+
+
+
+
     public void checkDengue(Location location){
 
         ImageView outline = findViewById(R.id.outlineIcon);
@@ -498,7 +588,10 @@ public class MainActivity extends AppCompatActivity{
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println(response.toString());
+
+                        boolean inDengueArea = false;
+
+                        //System.out.println(response.toString());
                         GeoJsonParser g = new GeoJsonParser(response);
                         for(GeoJsonFeature feature: g.getFeatures()){
                             LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
@@ -507,6 +600,21 @@ public class MainActivity extends AppCompatActivity{
                                 shield.setActivated(true);
                                 outline.setActivated(true);
                                 warning.setText("Exposed to dengue");
+                                LinearLayout hazardList = findViewById(R.id.hazardList);
+                                ImageView newButton = new ImageView(MainActivity.this);
+                                newButton.setImageResource(R.drawable.mosquito_icon);
+                                newButton.setAdjustViewBounds(true);
+                                newButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        startActivity(new Intent(getApplicationContext(), Dengue.class));
+                                        saveData();
+                                        finish();
+
+                                    }
+                                });
+                                hazardList.addView(newButton);
 
                             }
 
