@@ -16,6 +16,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -72,11 +74,15 @@ public class MainActivity extends AppCompatActivity{
     private LocationRequest locationRequest;
     private boolean panicSent = false;
     private String panicRequestSent = "";
-    private Location locationData;
+    private Location apiLocation;
+    private Location lastLocation;
+    private Handler locationHandler;
+    private Handler apiHandler;
 
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String PANIC_REQUEST = "panicLocation";
-    private boolean[] bool_arr = {false, false, false, false};  //idx 0 = UV, idx 1 = flood, idx 2 = dengue, idx 3 = temperature
+    private boolean[] boolSettings = {false, false, false, false};  //idx 0 = UV, idx 1 = flood, idx 2 = dengue, idx 3 = temperature
+    private ImageView[] alertList = {null, null, null, null};
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -91,17 +97,26 @@ public class MainActivity extends AppCompatActivity{
         ImageView outline = findViewById(R.id.outlineIcon);
         ImageView shield = findViewById(R.id.shieldIcon);
         TextView warning = findViewById(R.id.textView3);
+        locationHandler = new Handler();
+        apiHandler = new Handler();
+        //shield.setVisibility(View.GONE);
+
 
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         ToggleButton locationSharing = findViewById(R.id.toggleButton);
+        if(panicSent){
+            locationSharing.toggle();
+        }
 
 
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(1000);
-        //startLocationUpdates();
+        locationRequest.setInterval(5000);
+        locationRequest.setWaitForAccurateLocation(true);
+        //locationRequest.setNumUpdates(2);
+
 
         alertLocationCallback = new LocationCallback() {
             public void onLocationResult(LocationResult locationResult){
@@ -109,32 +124,76 @@ public class MainActivity extends AppCompatActivity{
                     return;
                 }
                 Location location = locationResult.getLastLocation();
-                MainActivity.this.locationData = location;
+                //MainActivity.this.locationData = location;
 
 
-                sendLocationAlert(location);
+                //sendLocationAlert(location);
+                MainActivity.this.lastLocation = location;
+
+
+                locationHandler.postDelayed(new Runnable() {
+                    public void run(){
+                        locationHandler.removeCallbacksAndMessages(null);
+                        fusedLocationClient.removeLocationUpdates(alertLocationCallback);
+                        //hazardList.setVisibility(View.VISIBLE);
+                        sendLocationAlert(lastLocation);
+
+                    }
+
+                }, 500);
 
 
 
-                fusedLocationClient.removeLocationUpdates(alertLocationCallback);
+
+
+
+
+
+                //fusedLocationClient.removeLocationUpdates(alertLocationCallback);
             }
         };
 
         apiLocationCallback = new LocationCallback() {
-            public void onLocationResult(LocationResult locationResult){
-                if(locationResult == null){
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    System.out.println("hello");
                     return;
+
                 }
-                Location location = locationResult.getLastLocation();
-                MainActivity.this.locationData = location;
+                Location location = locationResult.getLocations().get(0);
+                MainActivity.this.apiLocation = location;
+                LinearLayout hazardList = findViewById(R.id.hazardList);
+                //hazardList.setVisibility(View.GONE);
 
+                    hazardList.removeAllViews();
 
-                checkUV();
-                checkRain(location);
-                checkDengue(location);
-                checkTemperature(location);
-                fusedLocationClient.removeLocationUpdates(apiLocationCallback);
-            }
+                    apiHandler.postDelayed(new Runnable() {
+                        public void run(){
+                            apiHandler.removeCallbacksAndMessages(null);
+                            fusedLocationClient.removeLocationUpdates(apiLocationCallback);
+
+                            if (boolSettings[0]) {
+                                checkUV();
+                            }
+
+                            if (boolSettings[1]) {
+                                checkRain(apiLocation);
+                            }
+                            if (boolSettings[3]) {
+                                checkDengue(apiLocation);
+                            }
+                            if (boolSettings[2]) {
+                                checkTemperature(apiLocation);
+                            }
+                            //hazardList.setVisibility(View.VISIBLE);
+
+                    }
+
+                },500 );
+
+                    //fusedLocationClient.removeLocationUpdates(apiLocationCallback);
+                }
+
         };
 
 
@@ -152,12 +211,14 @@ public class MainActivity extends AppCompatActivity{
         panicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(MainActivity.this.panicSent == false) {
+                //if(MainActivity.this.panicSent == false) {
                     MainActivity.this.panicSent = true;
+                    //startLocationUpdates(apiLocationCallback);
+                    //cancelPanicRequest();
                     startLocationUpdates(alertLocationCallback);
 
                     locationSharing.toggle();
-                }
+                //}
 
 
 
@@ -170,7 +231,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 if(panicSent == true){
                     locationSharing.toggle();
-                }
+                }/*
 
 
                 DocumentReference db = fStore.collection("users").document(fAuth.getCurrentUser().getUid());
@@ -201,7 +262,8 @@ public class MainActivity extends AppCompatActivity{
 
                         }
                     }
-                });
+                });*/
+                cancelPanicRequest();
 
                 panicSent = false;
 
@@ -224,9 +286,43 @@ public class MainActivity extends AppCompatActivity{
         //checkDengue();
         shield.setActivated(false);
         outline.setActivated(false);
-        LinearLayout hazardList = findViewById(R.id.hazardList);
-        hazardList.removeAllViews();
+        //LinearLayout hazardList = findViewById(R.id.hazardList);
+        //hazardList.removeAllViews();
         startLocationUpdates(apiLocationCallback);
+
+    }
+
+    public void cancelPanicRequest(){
+
+        DocumentReference db = fStore.collection("users").document(fAuth.getCurrentUser().getUid());
+        db.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    ArrayList<String> friendList = (ArrayList<String>)document.get("friend_list");
+                    String curUser = (String)document.get("username");
+                    for(int i=0; i < friendList.size(); i++){
+                        String username = friendList.get(i);
+                        CollectionReference userList = fStore.collection("users");
+                        Query query = userList.whereEqualTo("username", username);
+                        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    DocumentReference document = task.getResult().getDocuments().get(0).getReference();
+                                    document.update("panic_request",FieldValue.arrayRemove(panicRequestSent));
+
+                                }
+                            }
+                        });
+
+
+                    }
+
+                }
+            }
+        });
 
     }
 
@@ -261,7 +357,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void startLocationUpdates(LocationCallback locationCallback) {
         try {
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
         } catch (SecurityException e){
 
         }
@@ -340,12 +436,19 @@ public class MainActivity extends AppCompatActivity{
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PANIC_REQUEST, panicRequestSent);
+        editor.putBoolean("panic_sent", panicSent);
         editor.apply();
     }
 
     public void loadData(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
         panicRequestSent   = sharedPreferences.getString(PANIC_REQUEST, "");
+        panicSent = sharedPreferences.getBoolean("panic_sent", false);
+        boolSettings[0] = sharedPreferences.getBoolean("checkUV", false);
+        boolSettings[1] = sharedPreferences.getBoolean("checkFlood", false);
+        boolSettings[2] = sharedPreferences.getBoolean("checkTemp", false);
+        boolSettings[3] = sharedPreferences.getBoolean("checkDengue", false);
+
     }
 
     public void checkUV(){
@@ -371,7 +474,7 @@ public class MainActivity extends AppCompatActivity{
                                 outline.setActivated(true);
                                 shield.setActivated(true);
                                 warning.setText("WARNING! Unhealthy UV levels!");
-                                MainActivity.this.bool_arr[0] = true;
+
                                 LinearLayout hazardList = findViewById(R.id.hazardList);
                                 ImageView newButton = new ImageView(MainActivity.this);
                                 newButton.setImageResource(R.drawable.ultraviolet_icon);
@@ -447,7 +550,7 @@ public class MainActivity extends AppCompatActivity{
                                 outline.setActivated(true);
                                 shield.setActivated(true);
                                 warning.setText("WARNING! High chance of lightning and flooding!");
-                                MainActivity.this.bool_arr[1] = true;
+
 
                                 LinearLayout hazardList = findViewById(R.id.hazardList);
                                 ImageView newButton = new ImageView(MainActivity.this);
@@ -534,7 +637,7 @@ public class MainActivity extends AppCompatActivity{
                                 outline.setActivated(true);
                                 shield.setActivated(true);
                                 warning.setText("WARNING! High chance of heat stroke!");
-                                MainActivity.this.bool_arr[1] = true;
+
 
                                 LinearLayout hazardList = findViewById(R.id.hazardList);
                                 ImageView newButton = new ImageView(MainActivity.this);
@@ -603,6 +706,7 @@ public class MainActivity extends AppCompatActivity{
                                 LinearLayout hazardList = findViewById(R.id.hazardList);
                                 ImageView newButton = new ImageView(MainActivity.this);
                                 newButton.setImageResource(R.drawable.mosquito_icon);
+                                //newButton.setBackground(getDrawable(R.drawable.custom_image_button));
                                 newButton.setAdjustViewBounds(true);
                                 newButton.setOnClickListener(new View.OnClickListener() {
                                     @Override

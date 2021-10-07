@@ -178,7 +178,7 @@
       app:layout_constraintHorizontal_bias="0.85"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:srcCompat="@drawable/green_or_red_shield" />
+      app:srcCompat="@drawable/danger_icon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
