@@ -260,10 +260,27 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/outlineIcon"
         app:layout_constraintEnd_toEndOf="@+id/outlineIcon"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/outlineIcon"
-        app:layout_constraintTop_toBottomOf="@+id/shieldIcon" />
+        app:layout_constraintTop_toBottomOf="@+id/shieldIcon"
+        app:layout_constraintVertical_bias="0.101" />
 
+    <HorizontalScrollView
+        android:layout_width="349dp"
+        android:layout_height="60dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="@+id/outlineIcon"
+        app:layout_constraintEnd_toEndOf="@+id/outlineIcon"
+        app:layout_constraintStart_toStartOf="@+id/outlineIcon"
+        app:layout_constraintTop_toBottomOf="@+id/description_banner"
+        app:layout_constraintVertical_bias="1.0">
 
+        <LinearLayout
+            android:id="@+id/hazardList"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,6 +18,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -224,6 +225,8 @@ public class MainActivity extends AppCompatActivity{
         //checkDengue();
         shield.setActivated(false);
         outline.setActivated(false);
+        LinearLayout hazardList = findViewById(R.id.hazardList);
+        hazardList.removeAllViews();
         startLocationUpdates(apiLocationCallback);
 
     }
@@ -359,7 +362,7 @@ public class MainActivity extends AppCompatActivity{
                         try {
                             JSONObject status = response.getJSONArray("items").getJSONObject(0).getJSONArray("index").getJSONObject(1); //change to 0 for datetime param
                             int s = status.getInt("value");
-                            //s = 10;   //for testing
+                            s = 10;   //for testing
                             System.out.printf("\ns = %d\n", s);
                             if (s<6){       //healthy UV levels
                                 //outline.setActivated(false);
@@ -370,6 +373,22 @@ public class MainActivity extends AppCompatActivity{
                                 shield.setActivated(true);
                                 warning.setText("WARNING! Unhealthy UV levels!");
                                 MainActivity.this.bool_arr[0] = true;
+                                LinearLayout hazardList = findViewById(R.id.hazardList);
+                                ImageView newButton = new ImageView(MainActivity.this);
+                                newButton.setImageResource(R.drawable.ultraviolet_icon);
+                                newButton.setAdjustViewBounds(true);
+                                newButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        startActivity(new Intent(getApplicationContext(),UV.class));
+                                        saveData();
+                                        finish();
+
+                                    }
+                                });
+                                hazardList.addView(newButton);
+
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -423,13 +442,29 @@ public class MainActivity extends AppCompatActivity{
                             }
                             String closest_forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("forecasts").getJSONObject(index).getString("forecast");
                             String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("forecasts").getJSONObject(index).getString("area");
-                            //closest_forecast = "Thundery Showers";    //test
+                            closest_forecast = "Thundery Showers";    //test
                             if (closest_forecast.equals("Thundery Showers")){
                                 System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
                                 outline.setActivated(true);
                                 shield.setActivated(true);
                                 warning.setText("WARNING! High chance of lightning and flooding!");
                                 MainActivity.this.bool_arr[1] = true;
+
+                                LinearLayout hazardList = findViewById(R.id.hazardList);
+                                ImageView newButton = new ImageView(MainActivity.this);
+                                newButton.setImageResource(R.drawable.flooding_icon);
+                                newButton.setAdjustViewBounds(true);
+                                newButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        startActivity(new Intent(getApplicationContext(),Flood.class));
+                                        saveData();
+                                        finish();
+
+                                    }
+                                });
+                                hazardList.addView(newButton);
                             }else{
                                 //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
                                 //outline.setActivated(false);
