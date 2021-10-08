@@ -220,15 +220,16 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        //checkUV();
-        //checkRain();
-        //checkDengue();
+
         shield.setActivated(false);
         outline.setActivated(false);
-        //LinearLayout hazardList = findViewById(R.id.hazardList);
-        //hazardList.removeAllViews();
         startLocationUpdates(apiLocationCallback);
 
+    }
+
+    protected void onDestroy(){
+        super.onDestroy();
+        fusedLocationClient.removeLocationUpdates(apiLocationCallback);
     }
 
     public void cancelPanicRequest(){
