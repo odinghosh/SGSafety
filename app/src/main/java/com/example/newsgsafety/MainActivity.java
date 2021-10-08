@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity{
 
                     }
 
-                }, 1000);
+                }, 500);
 
 
 
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity{
 
                     }
 
-                },1000 );
+                },500 );
 
                     //fusedLocationClient.removeLocationUpdates(apiLocationCallback);
                 }
@@ -350,9 +350,9 @@ public class MainActivity extends AppCompatActivity{
         finish();
     }
 
-    public void paniclocation (View view){
-        startActivity(new Intent(getApplicationContext(),PanicLocation.class));
-        finish();
+    public void toggleButtonChange(View view){
+        return;
+
     }
 
     private void startLocationUpdates(LocationCallback locationCallback) {
@@ -375,11 +375,12 @@ public class MainActivity extends AppCompatActivity{
                     ArrayList<String> panicList = (ArrayList<String>)document.get("panic_request");
                     for(int i=0; i < panicList.size(); i++){
                         TextView panicRequest = new TextView(MainActivity.this);
-                        panicRequest.setText(panicList.get(i));
+                        panicRequest.setText(panicList.get(i).split(" ")[0]);
+                        final String locationString = panicList.get(i);
                         panicRequest.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String panicDetails = ((TextView)view).getText().toString();
+                                String panicDetails = locationString;
                                 startActivity(new Intent(getApplicationContext(), PanicLocation.class).putExtra("panicDetails",panicDetails));
                                 saveData();
                                 finish();
@@ -462,7 +463,7 @@ public class MainActivity extends AppCompatActivity{
                         ImageView shield = findViewById(R.id.shieldIcon);
                         TextView warning = findViewById(R.id.textView3);
                         try {
-                            JSONObject status = response.getJSONArray("items").getJSONObject(0).getJSONArray("index").getJSONObject(1); //change to 0 for datetime param
+                            JSONObject status = response.getJSONArray("items").getJSONObject(0).getJSONArray("index").getJSONObject(0); //change to 0 for datetime param
                             int s = status.getInt("value");
                             //s = 10;   //for testing
                             System.out.printf("\ns = %d\n", s);
@@ -470,6 +471,7 @@ public class MainActivity extends AppCompatActivity{
                                 //outline.setActivated(false);
                                 //shield.setActivated(false);
                                 //warning.setText("You are not exposed to any hazards!");
+                                System.out.println("hello world");
                             }else{
                                 outline.setActivated(true);
                                 shield.setActivated(true);
@@ -544,7 +546,7 @@ public class MainActivity extends AppCompatActivity{
                             }
                             String closest_forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("forecasts").getJSONObject(index).getString("forecast");
                             String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("forecasts").getJSONObject(index).getString("area");
-                            closest_forecast = "Thundery Showers";    //test
+                            //closest_forecast = "Thundery Showers";    //test
                             if (closest_forecast.equals("Thundery Showers")){
                                 System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
                                 outline.setActivated(true);
@@ -556,11 +558,12 @@ public class MainActivity extends AppCompatActivity{
                                 ImageView newButton = new ImageView(MainActivity.this);
                                 newButton.setImageResource(R.drawable.flooding_icon);
                                 newButton.setAdjustViewBounds(true);
+                                final String inputLocation = area;
                                 newButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
 
-                                        startActivity(new Intent(getApplicationContext(),Flood.class));
+                                        startActivity(new Intent(getApplicationContext(),Flood.class).putExtra("location", inputLocation));
                                         saveData();
                                         finish();
 
@@ -659,11 +662,13 @@ public class MainActivity extends AppCompatActivity{
                                 ImageView newButton = new ImageView(MainActivity.this);
                                 newButton.setImageResource(R.drawable.temperature_icon);
                                 newButton.setAdjustViewBounds(true);
+                                final String inputLocation = location;
+                                final Double inputTemp =(closest_forecast);
                                 newButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
 
-                                        startActivity(new Intent(getApplicationContext(),Temperature.class));
+                                        startActivity(new Intent(getApplicationContext(),Temperature.class).putExtra("location", inputLocation).putExtra("temperature", inputTemp));
                                         saveData();
                                         finish();
 
@@ -715,6 +720,8 @@ public class MainActivity extends AppCompatActivity{
                         for(GeoJsonFeature feature: g.getFeatures()){
                             LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
                             GeoJsonPolygon gpoly = (GeoJsonPolygon) feature.getGeometry();
+                            //System.out.println(feature);
+                            //feature.getProperties().toString().split(" ");
                             if (PolyUtil.containsLocation(l,gpoly.getCoordinates().get(0), true)){
                                 shield.setActivated(true);
                                 outline.setActivated(true);
@@ -724,11 +731,24 @@ public class MainActivity extends AppCompatActivity{
                                 newButton.setImageResource(R.drawable.mosquito_icon);
                                 //newButton.setBackground(getDrawable(R.drawable.custom_image_button));
                                 newButton.setAdjustViewBounds(true);
+                                String area = feature.getProperty("Description");
+                                int i = area.indexOf("<td>");
+                                int j = area.indexOf("</td>");
+                                //String locationArea = area.substring(i+4, j);
+                                String numArea = area.substring(j + 5);
+                                i = numArea.indexOf("<td>");
+                                j = numArea.indexOf("</td>");
+                                numArea = numArea.substring(i+4, j);
+                                int numCases = Integer.parseInt(numArea);
+
+                                //String area = feature.getProperties().toString();
+                                System.out.println(area);
+                                System.out.println(numCases);
                                 newButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
 
-                                        startActivity(new Intent(getApplicationContext(), Dengue.class));
+                                        startActivity(new Intent(getApplicationContext(), Dengue.class).putExtra("cases", numCases));
                                         saveData();
                                         finish();
 

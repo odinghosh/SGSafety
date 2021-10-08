@@ -44,7 +44,9 @@ public class Flood extends AppCompatActivity {
     }
 
     public void init() {
-        String[] location = {"Pioneer"}; //For Testing
+        Bundle extras = getIntent().getExtras();
+        String curLocation = extras.getString("location");
+        String[] location = {curLocation} ; //For Testing
         String[] description = {"Risk of Lightning"}; //For Testing
 
         TableLayout stk = (TableLayout) findViewById(R.id.table_main);

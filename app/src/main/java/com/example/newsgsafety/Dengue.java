@@ -44,8 +44,10 @@ public class Dengue extends AppCompatActivity {
     }
 
     public void init() {
-        String[] location = {"Pioneer"}; //For Testing
-        int[] numcases = {100}; //For Testing
+        Bundle extras = getIntent().getExtras();
+        //String curLocation = extras.getString("location");
+        String[] location = {"Your Cluster location"}; //For Testing
+        int[] numcases = {extras.getInt("cases")}; //For Testing
 
         TableLayout stk = (TableLayout) findViewById(R.id.table_main);
         TableRow tbrow0 = new TableRow(this);
