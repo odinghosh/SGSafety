@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class ConfirmPanicSend extends AppCompatActivity {
+public class
+
+
+ConfirmPanicSend extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
