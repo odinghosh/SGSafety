@@ -44,8 +44,11 @@ public class Temperature extends AppCompatActivity {
     }
 
     public void init() {
-        String[] location = {"Pioneer"}; //For Testing
-        double[] temperature = {30.5}; //For Testing
+        Bundle extras = getIntent().getExtras();
+        String curLocation = extras.getString("location");
+        Double curTemp = extras.getDouble("temperature");
+        String[] location = {curLocation}; //For Testing
+        double[] temperature = {curTemp}; //For Testing
 
         TableLayout stk = (TableLayout) findViewById(R.id.table_main);
         TableRow tbrow0 = new TableRow(this);
