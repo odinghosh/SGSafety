@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity{
 
                     }
 
-                }, 500);
+                }, 1000);
 
 
 
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity{
 
                     }
 
-                },500 );
+                },1000 );
 
                     //fusedLocationClient.removeLocationUpdates(apiLocationCallback);
                 }
@@ -464,7 +464,7 @@ public class MainActivity extends AppCompatActivity{
                         try {
                             JSONObject status = response.getJSONArray("items").getJSONObject(0).getJSONArray("index").getJSONObject(1); //change to 0 for datetime param
                             int s = status.getInt("value");
-                            s = 10;   //for testing
+                            //s = 10;   //for testing
                             System.out.printf("\ns = %d\n", s);
                             if (s<6){       //healthy UV levels
                                 //outline.setActivated(false);
@@ -535,7 +535,7 @@ public class MainActivity extends AppCompatActivity{
                                 double lat = response.getJSONArray("area_metadata").getJSONObject(i).getJSONObject("label_location").getDouble("latitude");
                                 double lon = response.getJSONArray("area_metadata").getJSONObject(i).getJSONObject("label_location").getDouble("longitude");
                                 //s = 10;   //for testing
-                                System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
+                                //System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
 
                                 if (Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon) < min_dist){ //find closest location to user
                                     min_dist = Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon);
@@ -612,12 +612,14 @@ public class MainActivity extends AppCompatActivity{
                             //TESTING
                             double temp_lat = location.getLatitude();
                             double temp_lon = location.getLongitude();
-                            int len = response.getJSONArray("items").length();
+                            int len = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").length();
+                            System.out.println(len);
 
                             for (int i = 0; i < len; i++) {
                                 //System.out.printf("i = %d\n", i);
                                 //String forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("value");
-                                //String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("station_id");
+                                String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("station_id");
+                                System.out.println(area);
                                 double lat = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getJSONObject("location").getDouble("latitude");
                                 double lon = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getJSONObject("location").getDouble("longitude");
                                 //s = 10;   //for testing
@@ -630,10 +632,24 @@ public class MainActivity extends AppCompatActivity{
                             }
                             double closest_forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(index).getDouble("value");
                             String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(index).getString("station_id");
-                            closest_forecast = 35;    //test
-                            System.out.println(closest_forecast);
+                            //closest_forecast = 35;    //test
+                            String location = "";
+                            for (int i = 0; i < len; i++) {
+                                //System.out.printf("i = %d\n", i);
+                                //String forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("value");
+                                //String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("station_id");
+                                String id = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getString("id");
+                                location  = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getString("name");
+                                if(id.equals(area)){
+                                    break;
+                                }
+                                //s = 10;   //for testing
+                                //System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
+                            }
+                            System.out.println(location);
                             if (closest_forecast > 30){
                                 //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
+                                System.out.println(area);
                                 outline.setActivated(true);
                                 shield.setActivated(true);
                                 warning.setText("WARNING! High chance of heat stroke!");
