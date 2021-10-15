@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity{
 
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(1000);
+        locationRequest.setInterval(2000);
 
 
         alertLocationCallback = new LocationCallback() {
@@ -421,7 +421,7 @@ public class MainActivity extends AppCompatActivity{
                             }else{
                                 outline.setActivated(true);
                                 shield.setActivated(true);
-                                warning.setText("WARNING! Unhealthy UV levels!");
+                                warning.setText("Potential Hazards Nearby!");
 
 
                                 newButton.setOnClickListener(new View.OnClickListener() {
@@ -502,7 +502,7 @@ public class MainActivity extends AppCompatActivity{
                                 System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
                                 outline.setActivated(true);
                                 shield.setActivated(true);
-                                warning.setText("WARNING! High chance of lightning and flooding!");
+                                warning.setText("Potential Hazards Nearby!");
                                 final String inputLocation = area;
                                 newButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -608,7 +608,7 @@ public class MainActivity extends AppCompatActivity{
                                 System.out.println(area);
                                 outline.setActivated(true);
                                 shield.setActivated(true);
-                                warning.setText("WARNING! High chance of heat stroke!");
+                                warning.setText("Potential Hazards Nearby!");
                                 newButton.setVisibility(View.VISIBLE);
 
                                 final String inputLocation = location;
@@ -683,7 +683,7 @@ public class MainActivity extends AppCompatActivity{
                             if (PolyUtil.containsLocation(l,gpoly.getCoordinates().get(0), true)){
                                 shield.setActivated(true);
                                 outline.setActivated(true);
-                                warning.setText("Exposed to dengue");
+                                warning.setText("Potential Hazards Nearby!");
                                 //newButton.setImageResource(R.drawable.mosquito_icon);
                                 //newButton.setBackground(getDrawable(R.drawable.custom_image_button));
                                 //newButton.setAdjustViewBounds(true);
