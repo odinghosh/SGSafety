@@ -13,7 +13,7 @@
 
 ## General info
 
-This README contains the a brief overview of the SGSafety app which is a collaborative effort of a 6 member team:
+This README contains the a brief overview of the SGSafety app which is a collaborative effort of a 6 member team
 
 ## Technologies
 
