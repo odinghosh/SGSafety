@@ -100,7 +100,7 @@ The hazards the app identifies and their corresponding information are as shown:
     * The ultraviolet radiation alert page will look something as follows:
 
     <p align="center">
-        <img width="221" height="400" src="https://www.dropbox.com/s/chkvmbz0yyeo9ht/high_temperature.png?raw=1">
+        <img width="221" height="400" src="https://www.dropbox.com/s/r0nyu3lxud5c3ju/UV.png?raw=1">
     <p>
 
 ## **Sending panic request to close contacts**
