@@ -41,8 +41,6 @@ A snapshot of the main page of the application will look something as follows:
 
 ## **Identify potential hazards**
 
----
-
 The **identify potential hazards** feature in the app is to assist users to identify hazards in areas in Singapore that they are in close proximity of using measurements from Singapore's government database
 
 The hazards the app identifies and their corresponding information are as shown:
@@ -108,8 +106,6 @@ The hazards the app identifies and their corresponding information are as shown:
     <p>
 
 ## **Sending panic request to close contacts**
-
----
 
 The **Sending panic request to close contacts** feature in the app is to allow users to send their location to the users' close contacts to see the user's current location in case the user is in need of assistance
 
