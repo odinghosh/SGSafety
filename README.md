@@ -8,6 +8,7 @@
 * [Main page](#main-page)
 * [Identify potential hazards](#identify-potential-hazards)
 * [Sending panic request to close contacts](#sending-panic-request-to-close-contacts)
+* [Settings](#settings)
 * [Conclusion](#conclusion)
 
 ## General info
@@ -143,6 +144,24 @@ The **Sending panic request to close contacts** feature in the app is to allow u
     <p align="center">
         <img width="221" height="400" src="https://www.dropbox.com/s/e6x44zivzxfvttz/map_clicked.png?raw=1">
     <p>
+
+## Settings
+
+1. Further going to the rightmost tab is the settings tab
+
+2. Here, users can decide if he/she wants to be notified of certain hazards that users themselves are in the vicinity of
+
+3. If the checkboxes are checked, the user will be notified of those hazards if the hazards are happening in the user's area
+
+4. If the checkboxes are unchecked, the user will be not notified of those hazards even if the hazards are happening in the user's area
+
+5. The logout button is also placed here
+
+6. A snapshot of the settings page will look something as follows:
+
+<p align="center">
+    <img width="221" height="400" src="https://www.dropbox.com/s/yclgliumgks0mew/settings.png?raw=1">
+<p>
 
 ## Conclusion
 
