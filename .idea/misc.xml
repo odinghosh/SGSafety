@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/User/StudioProjects/SGSafety/app/src/main/res/drawable/btn_green_outline.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/User/StudioProjects/SGSafety/app/src/main/res/drawable/btn_red_outline.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/User/StudioProjects/SGSafety/app/src/main/res/drawable/green_or_red_shield.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/User/StudioProjects/SGSafety/app/src/main/res/layout/activity_hazards.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/User/StudioProjects/SGSafety/app/src/main/res/layout/activity_main.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/custom_image_button.xml" value="0.14427083333333332" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/green_or_red_shield.xml" value="0.2703125" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_contacts.xml" value="0.264" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_dengue.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_hazards.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_panic_location.xml" value="0.16423357664233576" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_temperature.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_uv.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_bg.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_green.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_grey.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_red.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_red_outline.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/custom_image_button.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/green_or_red_outline.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/green_or_red_shield.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/green_shield.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/safe_or_unsafe_text.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/show_less_or_more.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/toggle_location.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_confirm_panic.xml" value="0.1796875" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_confirm_panic_send.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_contacts.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_dengue.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_flood.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_hazards.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_login.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_logout.xml" value="0.1796875" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_panic_location.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_settings.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_signup.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_temperature.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_uv.xml" value="0.22" />
+        <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/layout/logout.xml" value="0.1796875" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.22" />
+      </ProjectState>
+    </option>
+  </component>
+</project>

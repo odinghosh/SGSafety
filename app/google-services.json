@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "966572591451",
+    "project_id": "newsgsafety",
+    "storage_bucket": "newsgsafety.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966572591451:android:6856d11312efc18106727e",
+        "android_client_info": {
+          "package_name": "com.example.newsgsafety"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966572591451-d5v0151gbbl1plff01c0o9s4pov35bo8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhkJs6Imms50UIP6FiK3hcNE3w1pMrCOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966572591451-d5v0151gbbl1plff01c0o9s4pov35bo8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
