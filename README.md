@@ -159,9 +159,9 @@ The **Sending panic request to close contacts** feature in the app is to allow u
 
 6. A snapshot of the settings page will look something as follows:
 
-<p align="center">
-    <img width="221" height="400" src="https://www.dropbox.com/s/yclgliumgks0mew/settings.png?raw=1">
-<p>
+    <p align="center">
+        <img width="221" height="400" src="https://www.dropbox.com/s/yclgliumgks0mew/settings.png?raw=1">
+    <p>
 
 ## Conclusion
 
