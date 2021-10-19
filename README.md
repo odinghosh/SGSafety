@@ -13,7 +13,7 @@
 
 ## General info
 
-This README contains the a brief overview of the SGSafety app which is a collaborative effort of a 6 member team
+This README contains a brief overview of the SGSafety app which is a collaborative effort of a 6 member team
 
 ## Technologies
 
@@ -25,17 +25,17 @@ The project is created using:
 
 This application has 2 main uses:
 
-1. The first main usage is to help users **identify potential hazards** in the area that they are in close proximity of
+1. The first is to help users **identify potential hazards** in the area that they are in close proximity of
 
-2. The second main usage is to allow users to **send panic request to close contacts** to allow users to send their location to their close contacts to see the user's current location in case the user is in need of assistance
+2. The second is to allow users to **send panic request to close contacts** to allow users to send their location to their close contacts to see the user's current location in case the user is in need of assistance
 
 ## **Main page**
 
-A snapshot of the main page of the application will look something as follows:
+1. A snapshot of the main page of the application will look something as follows:
 
-<p align="center">
-    <img width="221" height="400" src="https://www.dropbox.com/s/tirsjokj2jtvvgu/main_page.png?raw=1">
-<p>
+    <p align="center">
+        <img width="221" height="400" src="https://www.dropbox.com/s/tirsjokj2jtvvgu/main_page.png?raw=1">
+    <p>
 
 ## **Identify potential hazards**
 
@@ -147,7 +147,7 @@ The **Sending panic request to close contacts** feature in the app is to allow u
 
 ## Settings
 
-1. Further going to the rightmost tab is the settings tab
+1. Going to the rightmost tab is the **settings** tab
 
 2. Here, users can decide if he/she wants to be notified of certain hazards that users themselves are in the vicinity of
 
@@ -155,9 +155,7 @@ The **Sending panic request to close contacts** feature in the app is to allow u
 
 4. If the checkboxes are unchecked, the user will be not notified of those hazards even if the hazards are happening in the user's area
 
-5. The logout button is also placed here
-
-6. A snapshot of the settings page will look something as follows:
+5. A snapshot of the settings page will look something as follows:
 
     <p align="center">
         <img width="221" height="400" src="https://www.dropbox.com/s/yclgliumgks0mew/settings.png?raw=1">
