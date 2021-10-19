@@ -31,8 +31,6 @@ This application has 2 main uses:
 
 ## **Main page**
 
----
-
 A snapshot of the main page of the application will look something as follows:
 
 <p align="center">
