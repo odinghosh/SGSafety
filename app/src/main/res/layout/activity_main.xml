@@ -200,6 +200,7 @@
         android:scaleType="fitXY"
         android:textOff=""
         android:textOn=""
+        android:onClick="toggleButtonChange"
         app:layout_constraintBottom_toTopOf="@+id/description_banner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

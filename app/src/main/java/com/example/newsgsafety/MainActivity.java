@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void toggleButtonChange(View view){
-        return;
+        ((ToggleButton)view).toggle();
 
     }
 
