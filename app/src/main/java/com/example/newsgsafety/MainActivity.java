@@ -84,12 +84,14 @@ public class MainActivity extends AppCompatActivity{
         ImageView outline = findViewById(R.id.outlineIcon);
         ImageView shield = findViewById(R.id.shieldIcon);
         TextView warning = findViewById(R.id.textView3);
+        TextView bannerText = findViewById(R.id.description_banner);
         locationHandler = new Handler();
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         ToggleButton locationSharing = findViewById(R.id.toggleButton);
         if(panicSent){
             locationSharing.toggle();
+            bannerText.setText("Location shared to close contacts");
         }
 
 
@@ -178,6 +180,7 @@ public class MainActivity extends AppCompatActivity{
                     startLocationUpdates(alertLocationCallback);
 
                     locationSharing.toggle();
+                    bannerText.setText("Location shared to close contacts");
                 //}
 
 
@@ -195,6 +198,7 @@ public class MainActivity extends AppCompatActivity{
                 cancelPanicRequest();
 
                 panicSent = false;
+                bannerText.setText("Welcome User!");
 
             }
         });
@@ -397,11 +401,9 @@ public class MainActivity extends AppCompatActivity{
                             //s = 10;   //for testing
                             System.out.printf("\ns = %d\n", s);
                             if (s<6){       //healthy UV levels
-                                //outline.setActivated(false);
-                                //shield.setActivated(false);
-                                //warning.setText("You are not exposed to any hazards!");
                                 System.out.println("hello world");
                                 newButton.setVisibility(View.INVISIBLE);
+
                             }else{
                                 outline.setActivated(true);
                                 shield.setActivated(true);
@@ -437,10 +439,9 @@ public class MainActivity extends AppCompatActivity{
         MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
     }
     public void checkRain(Location location){
-        //startLocationUpdates();
+
         String url = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast";
-//        LocationResult locationResult = null;
-//        Location location = locationResult.getLastLocation();
+
 
         ImageView newButton = findViewById(R.id.imageView2);
         if(!boolSettings[1]){
@@ -500,10 +501,6 @@ public class MainActivity extends AppCompatActivity{
                                 });
                                 newButton.setVisibility(View.VISIBLE);
                             }else{
-                                //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
-                                //outline.setActivated(false);
-                                //shield.setActivated(false);
-                                //warning.setText("You are not exposed to any hazards!");
                                 newButton.setVisibility(View.INVISIBLE);
                             }
                         } catch (JSONException e) {
@@ -662,15 +659,10 @@ public class MainActivity extends AppCompatActivity{
                         for(GeoJsonFeature feature: g.getFeatures()){
                             LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
                             GeoJsonPolygon gpoly = (GeoJsonPolygon) feature.getGeometry();
-                            //System.out.println(feature);
-                            //feature.getProperties().toString().split(" ");
                             if (PolyUtil.containsLocation(l,gpoly.getCoordinates().get(0), true)){
                                 shield.setActivated(true);
                                 outline.setActivated(true);
                                 warning.setText("Exposed to hazards");
-                                //newButton.setImageResource(R.drawable.mosquito_icon);
-                                //newButton.setBackground(getDrawable(R.drawable.custom_image_button));
-                                //newButton.setAdjustViewBounds(true);
                                 String area = feature.getProperty("Description");
                                 int i;
                                 int j = area.indexOf("</td>");
