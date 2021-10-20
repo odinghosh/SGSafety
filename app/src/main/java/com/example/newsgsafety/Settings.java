@@ -10,13 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Settings extends AppCompatActivity {
 
-    private Button mSaveBtn;
+    private ImageButton mSaveBtn;
     private CheckBox mTemp, mDengue, mUltraViolet, mFlood;
 
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -90,11 +91,6 @@ public class Settings extends AppCompatActivity {
 
     public void contacts (View view){
         startActivity(new Intent(getApplicationContext(),Contacts.class));
-        finish();
-    }
-
-    public void hazards (View view){
-        startActivity(new Intent(getApplicationContext(),Hazards.class));
         finish();
     }
 

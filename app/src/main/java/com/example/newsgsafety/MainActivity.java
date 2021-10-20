@@ -1,12 +1,9 @@
 package com.example.newsgsafety;
 
-import static java.lang.Double.POSITIVE_INFINITY;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -16,6 +13,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,11 +32,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -51,7 +46,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.PolyUtil;
 import com.google.maps.android.data.geojson.GeoJsonFeature;
-import com.google.maps.android.data.geojson.GeoJsonLayer;
 import com.google.maps.android.data.geojson.GeoJsonParser;
 import com.google.maps.android.data.geojson.GeoJsonPolygon;
 
@@ -61,7 +55,6 @@ import org.json.JSONObject;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -71,12 +64,11 @@ public class MainActivity extends AppCompatActivity{
     private LocationRequest locationRequest;
     private boolean panicSent = false;
     private String panicRequestSent = "";
-    private Location locationData;
-
+    private Location lastLocation;
+    private Handler locationHandler;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String PANIC_REQUEST = "panicLocation";
-    private boolean[] bool_arr = {false, false, false, false};  //idx 0 = UV, idx 1 = flood, idx 2 = dengue, idx 3 = temperature
-
+    private boolean[] boolSettings = {false, false, false, false};  //idx 0 = UV, idx 1 = flood, idx 2 = dengue, idx 3 = temperature
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
 
@@ -87,20 +79,24 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         ImageView outline = findViewById(R.id.outlineIcon);
         ImageView shield = findViewById(R.id.shieldIcon);
         TextView warning = findViewById(R.id.textView3);
-
-
+        locationHandler = new Handler();
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         ToggleButton locationSharing = findViewById(R.id.toggleButton);
+        if(panicSent){
+            locationSharing.toggle();
+        }
 
 
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(1000);
-        //startLocationUpdates();
+
 
         alertLocationCallback = new LocationCallback() {
             public void onLocationResult(LocationResult locationResult){
@@ -108,33 +104,56 @@ public class MainActivity extends AppCompatActivity{
                     return;
                 }
                 Location location = locationResult.getLastLocation();
-                MainActivity.this.locationData = location;
-
-
-                sendLocationAlert(location);
 
 
 
-                fusedLocationClient.removeLocationUpdates(alertLocationCallback);
+                //sendLocationAlert(location);
+                MainActivity.this.lastLocation = location;
+
+
+                locationHandler.postDelayed(new Runnable() {
+                    public void run(){
+                        locationHandler.removeCallbacksAndMessages(null);
+                        fusedLocationClient.removeLocationUpdates(alertLocationCallback);
+                        //hazardList.setVisibility(View.VISIBLE);
+                        sendLocationAlert(lastLocation);
+
+                    }
+
+                }, 2000);
+
+
+
+
+
+
+
+
+                //fusedLocationClient.removeLocationUpdates(alertLocationCallback);
             }
         };
 
         apiLocationCallback = new LocationCallback() {
-            public void onLocationResult(LocationResult locationResult){
-                if(locationResult == null){
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    System.out.println("hello");
                     return;
+
                 }
-                Location location = locationResult.getLastLocation();
-                MainActivity.this.locationData = location;
+                Location location = locationResult.getLocations().get(0);
 
 
                 checkUV();
                 checkRain(location);
                 checkDengue(location);
+                checkTemperature(location);
 
-
-                fusedLocationClient.removeLocationUpdates(apiLocationCallback);
             }
+
+
+                    //fusedLocationClient.removeLocationUpdates(apiLocationCallback);
+
+
         };
 
 
@@ -152,12 +171,14 @@ public class MainActivity extends AppCompatActivity{
         panicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(MainActivity.this.panicSent == false) {
+                //if(MainActivity.this.panicSent == false) {
                     MainActivity.this.panicSent = true;
+                    //startLocationUpdates(apiLocationCallback);
+                    //cancelPanicRequest();
                     startLocationUpdates(alertLocationCallback);
 
                     locationSharing.toggle();
-                }
+                //}
 
 
 
@@ -171,37 +192,7 @@ public class MainActivity extends AppCompatActivity{
                 if(panicSent == true){
                     locationSharing.toggle();
                 }
-
-
-                DocumentReference db = fStore.collection("users").document(fAuth.getCurrentUser().getUid());
-                db.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
-                            DocumentSnapshot document = task.getResult();
-                            ArrayList<String> friendList = (ArrayList<String>)document.get("friend_list");
-                            String curUser = (String)document.get("username");
-                            for(int i=0; i < friendList.size(); i++){
-                                String username = friendList.get(i);
-                                CollectionReference userList = fStore.collection("users");
-                                Query query = userList.whereEqualTo("username", username);
-                                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful()){
-                                            DocumentReference document = task.getResult().getDocuments().get(0).getReference();
-                                            document.update("panic_request",FieldValue.arrayRemove(panicRequestSent));
-
-                                        }
-                                    }
-                                });
-
-
-                            }
-
-                        }
-                    }
-                });
+                cancelPanicRequest();
 
                 panicSent = false;
 
@@ -219,12 +210,49 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        //checkUV();
-        //checkRain();
-        //checkDengue();
+
         shield.setActivated(false);
         outline.setActivated(false);
         startLocationUpdates(apiLocationCallback);
+
+    }
+
+    protected void onDestroy(){
+        super.onDestroy();
+        fusedLocationClient.removeLocationUpdates(apiLocationCallback);
+    }
+
+    public void cancelPanicRequest(){
+
+        DocumentReference db = fStore.collection("users").document(fAuth.getCurrentUser().getUid());
+        db.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    ArrayList<String> friendList = (ArrayList<String>)document.get("friend_list");
+                    String curUser = (String)document.get("username");
+                    for(int i=0; i < friendList.size(); i++){
+                        String username = friendList.get(i);
+                        CollectionReference userList = fStore.collection("users");
+                        Query query = userList.whereEqualTo("username", username);
+                        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    DocumentReference document = task.getResult().getDocuments().get(0).getReference();
+                                    document.update("panic_request",FieldValue.arrayRemove(panicRequestSent));
+
+                                }
+                            }
+                        });
+
+
+                    }
+
+                }
+            }
+        });
 
     }
 
@@ -240,26 +268,20 @@ public class MainActivity extends AppCompatActivity{
         finish();
     }
 
-    public void hazards (View view){
-        startActivity(new Intent(getApplicationContext(),Hazards.class));
-        saveData();
-        finish();
-    }
-
     public void settings (View view){
         startActivity(new Intent(getApplicationContext(),Settings.class));
         saveData();
         finish();
     }
 
-    public void paniclocation (View view){
-        startActivity(new Intent(getApplicationContext(),PanicLocation.class));
-        finish();
+    public void toggleButtonChange(View view){
+        return;
+
     }
 
     private void startLocationUpdates(LocationCallback locationCallback) {
         try {
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
         } catch (SecurityException e){
 
         }
@@ -277,11 +299,12 @@ public class MainActivity extends AppCompatActivity{
                     ArrayList<String> panicList = (ArrayList<String>)document.get("panic_request");
                     for(int i=0; i < panicList.size(); i++){
                         TextView panicRequest = new TextView(MainActivity.this);
-                        panicRequest.setText(panicList.get(i));
+                        panicRequest.setText(panicList.get(i).split(" ")[0]);
+                        final String locationString = panicList.get(i);
                         panicRequest.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String panicDetails = ((TextView)view).getText().toString();
+                                String panicDetails = locationString;
                                 startActivity(new Intent(getApplicationContext(), PanicLocation.class).putExtra("panicDetails",panicDetails));
                                 saveData();
                                 finish();
@@ -338,16 +361,28 @@ public class MainActivity extends AppCompatActivity{
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PANIC_REQUEST, panicRequestSent);
+        editor.putBoolean("panic_sent", panicSent);
         editor.apply();
     }
 
     public void loadData(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
         panicRequestSent   = sharedPreferences.getString(PANIC_REQUEST, "");
+        panicSent = sharedPreferences.getBoolean("panic_sent", false);
+        boolSettings[0] = sharedPreferences.getBoolean("checkUV", false);
+        boolSettings[1] = sharedPreferences.getBoolean("checkFlood", false);
+        boolSettings[2] = sharedPreferences.getBoolean("checkTemp", false);
+        boolSettings[3] = sharedPreferences.getBoolean("checkDengue", false);
+
     }
 
     public void checkUV(){
         String url = "https://api.data.gov.sg/v1/environment/uv-index";
+        ImageView newButton = findViewById(R.id.imageView5);
+        if(!boolSettings[0]){
+            newButton.setVisibility(View.INVISIBLE);
+            return;
+        }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -357,7 +392,7 @@ public class MainActivity extends AppCompatActivity{
                         ImageView shield = findViewById(R.id.shieldIcon);
                         TextView warning = findViewById(R.id.textView3);
                         try {
-                            JSONObject status = response.getJSONArray("items").getJSONObject(0).getJSONArray("index").getJSONObject(1); //change to 0 for datetime param
+                            JSONObject status = response.getJSONArray("items").getJSONObject(0).getJSONArray("index").getJSONObject(0); //change to 0 for datetime param
                             int s = status.getInt("value");
                             //s = 10;   //for testing
                             System.out.printf("\ns = %d\n", s);
@@ -365,13 +400,29 @@ public class MainActivity extends AppCompatActivity{
                                 //outline.setActivated(false);
                                 //shield.setActivated(false);
                                 //warning.setText("You are not exposed to any hazards!");
+                                System.out.println("hello world");
+                                newButton.setVisibility(View.INVISIBLE);
                             }else{
                                 outline.setActivated(true);
                                 shield.setActivated(true);
                                 warning.setText("WARNING! Unhealthy UV levels!");
-                                MainActivity.this.bool_arr[0] = true;
+
+
+                                newButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        startActivity(new Intent(getApplicationContext(),UV.class));
+                                        saveData();
+                                        finish();
+
+                                    }
+                                });
+                                newButton.setVisibility(View.VISIBLE);
+
+
                             }
                         } catch (JSONException e) {
+                            checkUV();
                             e.printStackTrace();
                         }
                     }
@@ -391,6 +442,12 @@ public class MainActivity extends AppCompatActivity{
 //        LocationResult locationResult = null;
 //        Location location = locationResult.getLastLocation();
 
+        ImageView newButton = findViewById(R.id.imageView2);
+        if(!boolSettings[1]){
+            newButton.setVisibility(View.INVISIBLE);
+            return;
+        }
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -398,6 +455,7 @@ public class MainActivity extends AppCompatActivity{
                         ImageView outline = findViewById(R.id.outlineIcon);
                         ImageView shield = findViewById(R.id.shieldIcon);
                         TextView warning = findViewById(R.id.textView3);
+
 
                         try {
                             double min_dist = 100000;;
@@ -414,7 +472,7 @@ public class MainActivity extends AppCompatActivity{
                                 double lat = response.getJSONArray("area_metadata").getJSONObject(i).getJSONObject("label_location").getDouble("latitude");
                                 double lon = response.getJSONArray("area_metadata").getJSONObject(i).getJSONObject("label_location").getDouble("longitude");
                                 //s = 10;   //for testing
-                                System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
+                                //System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
 
                                 if (Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon) < min_dist){ //find closest location to user
                                     min_dist = Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon);
@@ -429,14 +487,27 @@ public class MainActivity extends AppCompatActivity{
                                 outline.setActivated(true);
                                 shield.setActivated(true);
                                 warning.setText("WARNING! High chance of lightning and flooding!");
-                                MainActivity.this.bool_arr[1] = true;
+                                final String inputLocation = area;
+                                newButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        startActivity(new Intent(getApplicationContext(),Flood.class).putExtra("location", inputLocation));
+                                        saveData();
+                                        finish();
+
+                                    }
+                                });
+                                newButton.setVisibility(View.VISIBLE);
                             }else{
                                 //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
                                 //outline.setActivated(false);
                                 //shield.setActivated(false);
                                 //warning.setText("You are not exposed to any hazards!");
+                                newButton.setVisibility(View.INVISIBLE);
                             }
                         } catch (JSONException e) {
+                            checkRain(location);
                             e.printStackTrace();
                         }
                     }
@@ -451,11 +522,130 @@ public class MainActivity extends AppCompatActivity{
         MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
     }
 
+
+
+
+    public void checkTemperature(Location location){
+        //startLocationUpdates();
+        String url = "https://api.data.gov.sg/v1/environment/air-temperature";
+//        LocationResult locationResult = null;
+//        Location location = locationResult.getLastLocation();
+
+        ImageView newButton = findViewById(R.id.imageView4);
+        if(!boolSettings[2]){
+            newButton.setVisibility(View.INVISIBLE);
+            return;
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        ImageView outline = findViewById(R.id.outlineIcon);
+                        ImageView shield = findViewById(R.id.shieldIcon);
+                        TextView warning = findViewById(R.id.textView3);
+
+                        try {
+                            double min_dist = 100000;;
+                            int index = 0;
+
+                            //TESTING
+                            double temp_lat = location.getLatitude();
+                            double temp_lon = location.getLongitude();
+                            int len = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").length();
+                            System.out.println(len);
+
+                            for (int i = 0; i < len; i++) {
+                                //System.out.printf("i = %d\n", i);
+                                //String forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("value");
+                                String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("station_id");
+                                System.out.println(area);
+                                double lat = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getJSONObject("location").getDouble("latitude");
+                                double lon = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getJSONObject("location").getDouble("longitude");
+                                //s = 10;   //for testing
+                                //System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
+
+                                if (Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon) < min_dist){ //find closest location to user
+                                    min_dist = Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon);
+                                    index = i;
+                                }
+                            }
+                            double closest_forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(index).getDouble("value");
+                            String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(index).getString("station_id");
+                            //closest_forecast = 35;    //test
+                            String location = "";
+                            for (int i = 0; i < len; i++) {
+                                //System.out.printf("i = %d\n", i);
+                                //String forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("value");
+                                //String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("station_id");
+                                String id = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getString("id");
+                                location  = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getString("name");
+                                if(id.equals(area)){
+                                    break;
+                                }
+                                //s = 10;   //for testing
+                                //System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
+                            }
+                            System.out.println(location);
+                            if (closest_forecast > 25){
+                                //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
+                                System.out.println(area);
+                                outline.setActivated(true);
+                                shield.setActivated(true);
+                                warning.setText("WARNING! High chance of heat stroke!");
+                                newButton.setVisibility(View.VISIBLE);
+
+                                final String inputLocation = location;
+                                final Double inputTemp =(closest_forecast);
+                                newButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        startActivity(new Intent(getApplicationContext(),Temperature.class).putExtra("location", inputLocation).putExtra("temperature", inputTemp));
+                                        saveData();
+                                        finish();
+
+                                    }
+                                });
+
+                            }else{
+                                //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
+                                //outline.setActivated(false);
+                                //shield.setActivated(false);
+                                //warning.setText("You are not exposed to any hazards!");
+                                newButton.setVisibility(View.INVISIBLE);
+                            }
+                        } catch (JSONException e) {
+                            checkTemperature(location);
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "UV code failed", Toast.LENGTH_SHORT);
+                    }
+                });
+
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
+    }
+
+
+
+
+
     public void checkDengue(Location location){
 
         ImageView outline = findViewById(R.id.outlineIcon);
         ImageView shield = findViewById(R.id.shieldIcon);
         TextView warning = findViewById(R.id.textView3);
+        ImageView newButton = findViewById(R.id.imageView3);
+        if(!boolSettings[3]){
+            newButton.setVisibility(View.INVISIBLE);
+            return;
+        }
+
 
 
         String url = "https://geo.data.gov.sg/dengue-cluster/2021/10/01/geojson/dengue-cluster.geojson";
@@ -463,20 +653,58 @@ public class MainActivity extends AppCompatActivity{
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println(response.toString());
+
+                        boolean inDengueArea = false;
+                        LinearLayout hazardList = findViewById(R.id.hazardList);
+
+                        //System.out.println(response.toString());
                         GeoJsonParser g = new GeoJsonParser(response);
                         for(GeoJsonFeature feature: g.getFeatures()){
                             LatLng l = new LatLng(location.getLatitude(), location.getLongitude());
                             GeoJsonPolygon gpoly = (GeoJsonPolygon) feature.getGeometry();
+                            //System.out.println(feature);
+                            //feature.getProperties().toString().split(" ");
                             if (PolyUtil.containsLocation(l,gpoly.getCoordinates().get(0), true)){
                                 shield.setActivated(true);
                                 outline.setActivated(true);
                                 warning.setText("Exposed to dengue");
+                                //newButton.setImageResource(R.drawable.mosquito_icon);
+                                //newButton.setBackground(getDrawable(R.drawable.custom_image_button));
+                                //newButton.setAdjustViewBounds(true);
+                                String area = feature.getProperty("Description");
+                                int i;
+                                int j = area.indexOf("</td>");
+                                //String locationArea = area.substring(i+4, j);
+                                String numArea = area.substring(j + 5);
+                                i = numArea.indexOf("<td>");
+                                j = numArea.indexOf("</td>");
+                                numArea = numArea.substring(i+4, j);
+                                int numCases = Integer.parseInt(numArea);
+                                newButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        startActivity(new Intent(getApplicationContext(), Dengue.class).putExtra("cases", numCases));
+                                        saveData();
+                                        finish();
+
+                                    }
+                                });
+                                newButton.setVisibility(View.VISIBLE);
+                                inDengueArea = true;
 
                             }
 
 
                         }
+
+                        if(!inDengueArea){
+                            newButton.setVisibility(View.INVISIBLE);
+                        }
+
+
+
+
 
 
                     }

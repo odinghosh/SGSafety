@@ -34,6 +34,11 @@ public class Login extends AppCompatActivity {
         mCreateBtn  = findViewById(R.id.gotosignup);
         progressBar = findViewById(R.id.progressBar2);
 
+        if(fAuth.getCurrentUser() != null){
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            finish();
+        }
+
         mLoginBtn.setOnClickListener(view -> {
 
             String email        = mEmail.getText().toString().trim();

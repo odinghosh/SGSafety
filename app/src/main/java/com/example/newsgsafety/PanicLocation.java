@@ -20,6 +20,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-public class PanicLocation extends FragmentActivity implements OnMapReadyCallback {
+public class PanicLocation extends AppCompatActivity implements OnMapReadyCallback {
 
 
 
@@ -61,11 +62,6 @@ public class PanicLocation extends FragmentActivity implements OnMapReadyCallbac
         finish();
     }
 
-    public void hazards (View view){
-        startActivity(new Intent(getApplicationContext(),Hazards.class));
-        finish();
-    }
-
     public void settings (View view){
         startActivity(new Intent(getApplicationContext(),Settings.class));
         finish();
@@ -90,6 +86,7 @@ public class PanicLocation extends FragmentActivity implements OnMapReadyCallbac
         double longitude = Double.parseDouble(panicDetails.split(" ")[2]);
         LatLng sydney = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Your location"));
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
 

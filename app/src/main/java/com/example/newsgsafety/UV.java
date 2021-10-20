@@ -24,11 +24,6 @@ public class UV extends AppCompatActivity {
         finish();
     }
 
-    public void hazards (View view){
-        startActivity(new Intent(getApplicationContext(),Hazards.class));
-        finish();
-    }
-
     public void settings (View view){
         startActivity(new Intent(getApplicationContext(),Settings.class));
         finish();

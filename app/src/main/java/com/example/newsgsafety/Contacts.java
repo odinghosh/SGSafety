@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -32,8 +33,8 @@ public class Contacts extends AppCompatActivity {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userID;
-    Button addButton;
-    Button removeButton;
+    ImageButton addButton;
+    ImageButton removeButton;
     DocumentReference db;
 
 
@@ -93,11 +94,6 @@ public class Contacts extends AppCompatActivity {
 
     public void contacts (View view){
         startActivity(new Intent(getApplicationContext(),Contacts.class));
-        finish();
-    }
-
-    public void hazards (View view){
-        startActivity(new Intent(getApplicationContext(),Hazards.class));
         finish();
     }
 

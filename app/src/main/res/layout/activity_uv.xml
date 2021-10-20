@@ -7,42 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".UV">
 
-  <Button
+  <ImageButton
       android:id="@+id/backtoHazardButton"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_width="80dp"
+      android:layout_height="50dp"
       android:layout_marginStart="16dp"
       android:layout_marginEnd="16dp"
       android:layout_marginBottom="16dp"
       android:background="@drawable/btn_grey"
-      android:onClick="hazards"
-      android:padding="10dp"
-      android:text="Back To\n Hazards Page"
-      android:textColor="@color/white"
+      android:paddingLeft="20dp"
+      android:paddingRight="20dp"
+      android:paddingTop="10dp"
+      android:paddingBottom="10dp"
+      android:scaleType="fitXY"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/navbar7"
-      app:layout_constraintVertical_bias="1.0" />
-
-  <ToggleButton
-      android:id="@+id/toggleButton7"
-      android:layout_width="50dp"
-      android:layout_height="50dp"
-      android:layout_marginStart="8dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginEnd="8dp"
-      android:layout_marginBottom="16dp"
-      android:background="@drawable/toggle_location"
-      android:scaleType="fitXY"
-      android:textOff=""
-      android:textOn=""
-      app:layout_constraintBottom_toTopOf="@+id/bannertext2"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.5"
-      app:layout_constraintStart_toEndOf="@+id/logo8"
-      app:layout_constraintTop_toBottomOf="@+id/settingsicon7"
-      app:layout_constraintVertical_bias="0.5" />
+      app:layout_constraintVertical_bias="1.0"
+      app:srcCompat="@drawable/back_icon"/>
 
   <ImageView
       android:id="@+id/logo8"
@@ -72,14 +55,15 @@
       android:id="@+id/settingsicon7"
       android:layout_width="50dp"
       android:layout_height="50dp"
+      android:layout_marginStart="8dp"
       android:layout_marginTop="8dp"
-      android:layout_marginEnd="16dp"
+      android:layout_marginEnd="8dp"
       android:background="@drawable/red_bar"
       android:onClick="settings"
       android:scaleType="fitXY"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="@+id/navbar7"
-      app:layout_constraintHorizontal_bias="0.95"
+      app:layout_constraintHorizontal_bias="0.8"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.0"
@@ -89,18 +73,19 @@
       android:id="@+id/homeButton7"
       android:layout_width="50dp"
       android:layout_height="50dp"
-      android:layout_marginStart="16dp"
+      android:layout_marginStart="8dp"
       android:layout_marginTop="8dp"
+      android:layout_marginEnd="8dp"
       android:background="@drawable/red_bar"
       android:onClick="main"
       android:scaleType="fitXY"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.05"
+      app:layout_constraintHorizontal_bias="0.2"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.0"
-      app:srcCompat="@drawable/homepageicon" />
+      app:srcCompat="@drawable/homepageicon_white" />
 
   <ImageButton
       android:id="@+id/contactsButton7"
@@ -108,33 +93,16 @@
       android:layout_height="50dp"
       android:layout_marginStart="8dp"
       android:layout_marginTop="8dp"
+      android:layout_marginEnd="8dp"
       android:background="@drawable/red_bar"
       android:onClick="contacts"
       android:scaleType="fitXY"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.35"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.0"
       app:srcCompat="@drawable/contacts_icon" />
-
-  <ImageButton
-      android:id="@+id/hazardsButton7"
-      android:layout_width="50dp"
-      android:layout_height="50dp"
-      android:layout_marginTop="8dp"
-      android:layout_marginEnd="8dp"
-      android:background="@drawable/red_bar"
-      android:scaleType="fitXY"
-      android:onClick="hazards"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@+id/navbar7"
-      app:layout_constraintHorizontal_bias="0.65"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.0"
-      app:srcCompat="@drawable/hazards_icon_white" />
 
   <TextView
       android:id="@+id/bannertext2"
@@ -173,12 +141,13 @@
       android:layout_width="100dp"
       android:layout_height="100dp"
       android:layout_marginEnd="16dp"
+      android:scaleType="fitXY"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.85"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:srcCompat="@drawable/green_or_red_shield" />
+      app:srcCompat="@drawable/danger_icon" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

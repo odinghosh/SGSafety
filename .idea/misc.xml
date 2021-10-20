@@ -8,16 +8,15 @@
         <entry key="..\:/Users/User/StudioProjects/SGSafety/app/src/main/res/drawable/green_or_red_shield.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/User/StudioProjects/SGSafety/app/src/main/res/layout/activity_hazards.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/User/StudioProjects/SGSafety/app/src/main/res/layout/activity_main.xml" value="0.22916666666666666" />
-        <entry key="..\:/Users/divya/Desktop/NTU STUFF/CE2006/SGSafety/app/src/main/res/layout/activity_dengue.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/divya/Desktop/NTU STUFF/CE2006/SGSafety/app/src/main/res/layout/activity_flood.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/divya/Desktop/NTU STUFF/CE2006/SGSafety/app/src/main/res/layout/activity_main.xml" value="0.23072916666666668" />
-        <entry key="..\:/Users/divya/Desktop/NTU STUFF/CE2006/SGSafety/app/src/main/res/layout/activity_panic_location.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/divya/Desktop/NTU STUFF/CE2006/SGSafety/app/src/main/res/layout/activity_signup.xml" value="0.4041666666666667" />
-        <entry key="..\:/Users/divya/Desktop/NTU STUFF/CE2006/SGSafety/app/src/main/res/layout/activity_temperature.xml" value="0.23072916666666668" />
-        <entry key="..\:/Users/divya/Desktop/NTU STUFF/CE2006/SGSafety/app/src/main/res/layout/activity_uv.xml" value="0.4041666666666667" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/custom_image_button.xml" value="0.14427083333333332" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/green_or_red_shield.xml" value="0.2703125" />
         <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_contacts.xml" value="0.264" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_dengue.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_hazards.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_panic_location.xml" value="0.16423357664233576" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_temperature.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/oding/AndroidStudioProjects/SGSafety/app/src/main/res/layout/activity_uv.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_bg.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_green.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/willi/AndroidStudioProjects/SGSafety/app/src/main/res/drawable/btn_grey.xml" value="0.19583333333333333" />
