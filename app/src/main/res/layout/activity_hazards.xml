@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_centerVertical="false"
     android:textAlignment="center"
-    tools:context=".Hazards">
+    tools:context=".Hazard">
 
     <ToggleButton
         android:id="@+id/toggleButton3"

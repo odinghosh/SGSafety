@@ -85,7 +85,7 @@ public class PanicLocation extends AppCompatActivity implements OnMapReadyCallba
         double latitude = Double.parseDouble(panicDetails.split(" ")[1]);
         double longitude = Double.parseDouble(panicDetails.split(" ")[2]);
         LatLng sydney = new LatLng(latitude, longitude);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Your location"));
+        mMap.addMarker(new MarkerOptions().position(sydney).title(""));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
