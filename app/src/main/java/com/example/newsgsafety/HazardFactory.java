@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class HazardFactory {
 
-    public void makeHazardManagers(boolean[] boolSettings, MainActivity mainActivity, ArrayList<Hazard> hazardManagersList){
+    public void makeHazardManagers(boolean[] boolSettings, MainActivity mainActivity, ArrayList<HazardManager> hazardManagersList){
         for(int i=0;i<boolSettings.length;i++){
             if(boolSettings[i]){
                 switch(i){

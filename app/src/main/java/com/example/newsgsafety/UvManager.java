@@ -7,8 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -17,7 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UvManager extends Hazard {
+public class UvManager extends HazardManager {
 
     public UvManager(String url, MainActivity mainActivity){
         super(url, mainActivity);

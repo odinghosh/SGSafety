@@ -20,7 +20,7 @@ import com.google.maps.android.data.geojson.GeoJsonPolygon;
 
 import org.json.JSONObject;
 
-public class DengueManager extends Hazard {
+public class DengueManager extends HazardManager {
 
     public DengueManager(String url, MainActivity mainActivity){
         super(url, mainActivity);

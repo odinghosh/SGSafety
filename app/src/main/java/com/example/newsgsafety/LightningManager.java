@@ -15,7 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LightningManager extends Hazard {
+public class LightningManager extends HazardManager {
 
     public LightningManager(String url, MainActivity mainActivity){
         super(url, mainActivity);

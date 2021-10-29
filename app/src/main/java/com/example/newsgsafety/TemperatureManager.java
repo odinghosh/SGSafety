@@ -15,7 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class TemperatureManager extends Hazard {
+public class TemperatureManager extends HazardManager {
 
     public TemperatureManager(String url, MainActivity mainActivity){
 
