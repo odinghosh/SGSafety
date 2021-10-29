@@ -18,6 +18,7 @@ public class HazardFactory {
                         break;
                     case 3:
                         hazardManagersList.add(new TemperatureManager("https://api.data.gov.sg/v1/environment/air-temperature", mainActivity));
+                        break;
 
 
                 }
