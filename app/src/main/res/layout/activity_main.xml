@@ -274,6 +274,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/lightning_icon" />
 
             <ImageView
@@ -282,6 +283,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/mosquito_icon" />
 
             <ImageView
@@ -290,6 +292,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/temperature_icon" />
 
             <ImageView
@@ -298,6 +301,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/ultraviolet_icon" />
         </LinearLayout>
     </HorizontalScrollView>

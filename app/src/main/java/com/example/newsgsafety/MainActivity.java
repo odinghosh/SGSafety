@@ -71,10 +71,13 @@ public class MainActivity extends AppCompatActivity{
     public boolean[] boolSettings = {false, false, false, false};  //idx 0 = UV, idx 1 = flood, idx 2 = dengue, idx 3 = temperature
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    private UvManager uvManager = new UvManager("https://api.data.gov.sg/v1/environment/uv-index", MainActivity.this);
-    private TemperatureManager temperatureManager = new TemperatureManager("https://api.data.gov.sg/v1/environment/air-temperature",MainActivity.this);
-    private LightningManager lightningManager = new LightningManager("https://api.data.gov.sg/v1/environment/2-hour-weather-forecast", MainActivity.this);
-    private DengueManager dengueManager = new DengueManager("https://geo.data.gov.sg/dengue-cluster/2021/10/01/geojson/dengue-cluster.geojson", MainActivity.this);
+    private ArrayList<Hazard> hazardManagersList;
+    private HazardFactory hazardFactory;
+
+    //private UvManager uvManager = new UvManager("https://api.data.gov.sg/v1/environment/uv-index", MainActivity.this);
+    //private TemperatureManager temperatureManager = new TemperatureManager("https://api.data.gov.sg/v1/environment/air-temperature",MainActivity.this);
+    //private LightningManager lightningManager = new LightningManager("https://api.data.gov.sg/v1/environment/2-hour-weather-forecast", MainActivity.this);
+    //private DengueManager dengueManager = new DengueManager("https://geo.data.gov.sg/dengue-cluster/2021/10/01/geojson/dengue-cluster.geojson", MainActivity.this);
 
 
     @Override
@@ -82,6 +85,11 @@ public class MainActivity extends AppCompatActivity{
         loadData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        hazardFactory = new HazardFactory();
+        hazardManagersList = new ArrayList<Hazard>();
+        hazardFactory.makeHazardManagers(boolSettings, MainActivity.this, hazardManagersList);
+
+
 
 
 
@@ -148,15 +156,19 @@ public class MainActivity extends AppCompatActivity{
                 }
                 Location location = locationResult.getLocations().get(0);
 
+                for(int i=0;i<hazardManagersList.size();i++){
+                    hazardManagersList.get(i).checkHazard(location);
+                }
+
 
                 //checkUV();
-                uvManager.checkHazard(location);
-                lightningManager.checkHazard(location);
-                dengueManager.checkHazard(location);
+                //uvManager.checkHazard(location);
+                //lightningManager.checkHazard(location);
+                //dengueManager.checkHazard(location);
 
                 //checkDengue(location);
                 //checkTemperature(location);
-                temperatureManager.checkHazard(location);
+                //temperatureManager.checkHazard(location);
 
             }
 
