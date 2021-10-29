@@ -9,6 +9,7 @@
 
   <ImageButton
       android:id="@+id/backtoHazardButton"
+      android:onClick="main"
       android:layout_width="80dp"
       android:layout_height="50dp"
       android:layout_marginStart="16dp"

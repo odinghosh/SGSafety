@@ -68,9 +68,13 @@ public class MainActivity extends AppCompatActivity{
     private Handler locationHandler;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String PANIC_REQUEST = "panicLocation";
-    private boolean[] boolSettings = {false, false, false, false};  //idx 0 = UV, idx 1 = flood, idx 2 = dengue, idx 3 = temperature
+    public boolean[] boolSettings = {false, false, false, false};  //idx 0 = UV, idx 1 = flood, idx 2 = dengue, idx 3 = temperature
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
+    private UvManager uvManager = new UvManager("https://api.data.gov.sg/v1/environment/uv-index", MainActivity.this);
+    private TemperatureManager temperatureManager = new TemperatureManager("https://api.data.gov.sg/v1/environment/air-temperature",MainActivity.this);
+    private LightningManager lightningManager = new LightningManager("https://api.data.gov.sg/v1/environment/2-hour-weather-forecast", MainActivity.this);
+    private DengueManager dengueManager = new DengueManager("https://geo.data.gov.sg/dengue-cluster/2021/10/01/geojson/dengue-cluster.geojson", MainActivity.this);
 
 
     @Override
@@ -145,10 +149,14 @@ public class MainActivity extends AppCompatActivity{
                 Location location = locationResult.getLocations().get(0);
 
 
-                checkUV();
-                checkRain(location);
-                checkDengue(location);
-                checkTemperature(location);
+                //checkUV();
+                uvManager.checkHazard(location);
+                lightningManager.checkHazard(location);
+                dengueManager.checkHazard(location);
+
+                //checkDengue(location);
+                //checkTemperature(location);
+                temperatureManager.checkHazard(location);
 
             }
 
