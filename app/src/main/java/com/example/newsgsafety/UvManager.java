@@ -25,10 +25,6 @@ public class UvManager extends HazardManager {
     public void checkHazard(Location location){
         String url = this.url;
         ImageView newButton = this.mainActivity.findViewById(R.id.imageView5);
-        if(!mainActivity.boolSettings[0]){
-            newButton.setVisibility(View.INVISIBLE);
-            return;
-        }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -45,11 +41,14 @@ public class UvManager extends HazardManager {
                             if (s<6){       //healthy UV levels
                                 System.out.println("hello world");
                                 newButton.setVisibility(View.INVISIBLE);
+                                mainActivity.hazardsExposed[0] = false;
 
                             }else{
                                 outline.setActivated(true);
                                 shield.setActivated(true);
                                 warning.setText("Exposed to hazards");
+
+                                mainActivity.hazardsExposed[0] = true;
 
 
                                 newButton.setOnClickListener(new View.OnClickListener() {
