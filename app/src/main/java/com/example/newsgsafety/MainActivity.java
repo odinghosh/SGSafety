@@ -64,11 +64,11 @@ public class MainActivity extends AppCompatActivity{
     private LocationRequest locationRequest;
     private boolean panicSent = false;
     private String panicRequestSent = "";
-    private Location lastLocation;
-    private Handler locationHandler;
+
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String PANIC_REQUEST = "panicLocation";
-    public boolean[] boolSettings = {false, false, false, false};  //idx 0 = UV, idx 1 = flood, idx 2 = dengue, idx 3 = temperature
+    public boolean[] boolSettings;
+    public boolean[] hazardsExposed = {false,false,false,false};
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     private ArrayList<HazardManager> hazardManagersList;
@@ -78,9 +78,13 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        loadData();
+        //loadData();
+        boolSettings = new boolean[4];
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        loadData();
+        System.out.println(boolSettings);
         hazardFactory = new HazardFactory();
         hazardManagersList = new ArrayList<HazardManager>();
         hazardFactory.makeHazardManagers(boolSettings, MainActivity.this, hazardManagersList);
@@ -93,7 +97,6 @@ public class MainActivity extends AppCompatActivity{
         ImageView shield = findViewById(R.id.shieldIcon);
         TextView warning = findViewById(R.id.textView3);
         TextView bannerText = findViewById(R.id.description_banner);
-        locationHandler = new Handler();
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         ToggleButton locationSharing = findViewById(R.id.toggleButton);
@@ -114,32 +117,8 @@ public class MainActivity extends AppCompatActivity{
                     return;
                 }
                 Location location = locationResult.getLastLocation();
-
-
-
-                //sendLocationAlert(location);
-                MainActivity.this.lastLocation = location;
-
-
-                locationHandler.postDelayed(new Runnable() {
-                    public void run(){
-                        locationHandler.removeCallbacksAndMessages(null);
-                        fusedLocationClient.removeLocationUpdates(alertLocationCallback);
-                        //hazardList.setVisibility(View.VISIBLE);
-                        sendLocationAlert(lastLocation);
-
-                    }
-
-                }, 2000);
-
-
-
-
-
-
-
-
-                //fusedLocationClient.removeLocationUpdates(alertLocationCallback);
+                sendLocationAlert(location);
+                fusedLocationClient.removeLocationUpdates(alertLocationCallback);
             }
         };
 
@@ -150,22 +129,28 @@ public class MainActivity extends AppCompatActivity{
                     return;
 
                 }
+                System.out.println(boolSettings[0]);
                 Location location = locationResult.getLocations().get(0);
 
                 for(int i=0;i<hazardManagersList.size();i++){
                     hazardManagersList.get(i).checkHazard(location);
                 }
+                System.out.println(hazardManagersList.size());
 
+                int hazardExposedCount = 0;
 
-                //checkUV();
-                //uvManager.checkHazard(location);
-                //lightningManager.checkHazard(location);
-                //dengueManager.checkHazard(location);
+                for(int i=0;i<hazardsExposed.length;i++){
+                    if(hazardsExposed[i]){
+                        hazardExposedCount++;
 
-                //checkDengue(location);
-                //checkTemperature(location);
-                //temperatureManager.checkHazard(location);
+                    }
+                }
 
+                if(hazardExposedCount == 0){
+                    shield.setActivated(false);
+                    outline.setActivated(false);
+                    warning.setText("You are not exposed to any hazards");
+                }
             }
 
 
@@ -189,15 +174,13 @@ public class MainActivity extends AppCompatActivity{
         panicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if(MainActivity.this.panicSent == false) {
+                if(MainActivity.this.panicSent == false) {
                     MainActivity.this.panicSent = true;
-                    //startLocationUpdates(apiLocationCallback);
-                    //cancelPanicRequest();
                     startLocationUpdates(alertLocationCallback);
 
                     locationSharing.toggle();
                     bannerText.setText("Location shared to close contacts");
-                //}
+                }
 
 
 

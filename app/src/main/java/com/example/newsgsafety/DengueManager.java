@@ -20,6 +20,8 @@ import com.google.maps.android.data.geojson.GeoJsonPolygon;
 
 import org.json.JSONObject;
 
+import java.util.Calendar;
+
 public class DengueManager extends HazardManager {
 
     public DengueManager(String url, MainActivity mainActivity){
@@ -31,14 +33,15 @@ public class DengueManager extends HazardManager {
         ImageView shield = mainActivity.findViewById(R.id.shieldIcon);
         TextView warning = mainActivity.findViewById(R.id.textView3);
         ImageView newButton = mainActivity.findViewById(R.id.imageView3);
-        if(!mainActivity.boolSettings[3]){
-            newButton.setVisibility(View.INVISIBLE);
-            return;
-        }
+
+
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH)+1;
+        System.out.println(String.format("%02d",month));
 
 
 
-        String url = "https://geo.data.gov.sg/dengue-cluster/2021/10/01/geojson/dengue-cluster.geojson";
+        String url = String.format("https://geo.data.gov.sg/dengue-cluster/2021/%02d/01/geojson/dengue-cluster.geojson",month);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -56,6 +59,7 @@ public class DengueManager extends HazardManager {
                                 shield.setActivated(true);
                                 outline.setActivated(true);
                                 warning.setText("Exposed to hazards");
+                                mainActivity.hazardsExposed[3] = true;
                                 String area = feature.getProperty("Description");
                                 int i;
                                 int j = area.indexOf("</td>");
@@ -85,6 +89,7 @@ public class DengueManager extends HazardManager {
 
                         if(!inDengueArea){
                             newButton.setVisibility(View.INVISIBLE);
+                            mainActivity.hazardsExposed[3] = false;
                         }
 
 

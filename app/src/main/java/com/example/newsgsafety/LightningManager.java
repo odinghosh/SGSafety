@@ -26,10 +26,7 @@ public class LightningManager extends HazardManager {
 
 
         ImageView newButton = mainActivity.findViewById(R.id.imageView2);
-        if(!mainActivity.boolSettings[1]){
-            newButton.setVisibility(View.INVISIBLE);
-            return;
-        }
+
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -82,8 +79,10 @@ public class LightningManager extends HazardManager {
                                     }
                                 });
                                 newButton.setVisibility(View.VISIBLE);
+                                mainActivity.hazardsExposed[1] = true;
                             }else{
                                 newButton.setVisibility(View.INVISIBLE);
+                                mainActivity.hazardsExposed[1] = false;
                             }
                         } catch (JSONException e) {
                             //checkRain(location);

@@ -29,10 +29,7 @@ public class TemperatureManager extends HazardManager {
 //        Location location = locationResult.getLastLocation();
 
         ImageView newButton = mainActivity.findViewById(R.id.imageView4);
-        if(!mainActivity.boolSettings[2]){
-            newButton.setVisibility(View.INVISIBLE);
-            return;
-        }
+
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -91,6 +88,7 @@ public class TemperatureManager extends HazardManager {
                                 shield.setActivated(true);
                                 warning.setText("Exposed to hazards");
                                 newButton.setVisibility(View.VISIBLE);
+                                mainActivity.hazardsExposed[2] = true;
 
                                 final String inputLocation = location;
                                 final Double inputTemp =(closest_forecast);
@@ -111,6 +109,7 @@ public class TemperatureManager extends HazardManager {
                                 //shield.setActivated(false);
                                 //warning.setText("You are not exposed to any hazards!");
                                 newButton.setVisibility(View.INVISIBLE);
+                                mainActivity.hazardsExposed[2] = false;
                             }
                         } catch (JSONException e) {
                             //checkTemperature(location);
