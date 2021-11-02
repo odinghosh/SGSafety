@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -67,6 +68,8 @@ public class Contacts extends AppCompatActivity {
                                 if(task.getResult().getDocuments().size() > 0) {
                                     db.update("friend_list", FieldValue.arrayUnion(user));
                                     refresh();
+                                } else {
+                                    Toast.makeText(Contacts.this, "username not found", Toast.LENGTH_SHORT);
                                 }
                             }
                         }
