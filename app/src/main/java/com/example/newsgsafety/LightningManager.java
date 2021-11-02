@@ -1,12 +1,10 @@
 package com.example.newsgsafety;
 
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -72,7 +70,7 @@ public class LightningManager extends HazardManager {
                                 newButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        activity.startActivity(new Intent(activity.getApplicationContext(),Flood.class).putExtra("location", inputLocation));
+                                        activity.startActivity(new Intent(activity.getApplicationContext(), Lightning.class).putExtra("location", inputLocation));
 
 
                                     }

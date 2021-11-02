@@ -17,7 +17,7 @@
             android:name=".ConfirmPanicSend"
             android:exported="true" />
         <activity
-            android:name=".Flood"
+            android:name=".Lightning"
             android:exported="true" />
         <activity
             android:name=".Dengue"
