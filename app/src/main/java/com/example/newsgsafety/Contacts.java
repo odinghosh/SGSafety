@@ -69,7 +69,8 @@ public class Contacts extends AppCompatActivity {
                                     db.update("friend_list", FieldValue.arrayUnion(user));
                                     refresh();
                                 } else {
-                                    Toast.makeText(Contacts.this, "username not found", Toast.LENGTH_SHORT);
+                                    System.out.println("username not found.");
+                                    Toast.makeText(Contacts.this, "username not found", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
