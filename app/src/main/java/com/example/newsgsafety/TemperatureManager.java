@@ -1,11 +1,14 @@
 package com.example.newsgsafety;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -17,28 +20,27 @@ import org.json.JSONObject;
 
 public class TemperatureManager extends HazardManager {
 
-    public TemperatureManager(String url, MainActivity mainActivity){
+    public TemperatureManager(String url){
 
-        super(url, mainActivity);
+        super(url);
     }
     @Override
-    public void checkHazard(Location location) {
+    public void checkHazard(Location location, boolean hazardsExposed[], AppCompatActivity activity) {
         //startLocationUpdates();
         String url = this.url;
 //        LocationResult locationResult = null;
 //        Location location = locationResult.getLastLocation();
 
-        ImageView newButton = mainActivity.findViewById(R.id.imageView4);
+        ImageView newButton = activity.findViewById(R.id.imageView4);
+        ImageView outline = activity.findViewById(R.id.outlineIcon);
+        ImageView shield = activity.findViewById(R.id.shieldIcon);
+        TextView warning = activity.findViewById(R.id.textView3);
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        ImageView outline = mainActivity.findViewById(R.id.outlineIcon);
-                        ImageView shield = mainActivity.findViewById(R.id.shieldIcon);
-                        TextView warning = mainActivity.findViewById(R.id.textView3);
-
                         try {
                             double min_dist = 100000;;
                             int index = 0;
@@ -88,7 +90,7 @@ public class TemperatureManager extends HazardManager {
                                 shield.setActivated(true);
                                 warning.setText("Exposed to hazards");
                                 newButton.setVisibility(View.VISIBLE);
-                                mainActivity.hazardsExposed[2] = true;
+                                hazardsExposed[2] = true;
 
                                 final String inputLocation = location;
                                 final Double inputTemp =(closest_forecast);
@@ -96,9 +98,8 @@ public class TemperatureManager extends HazardManager {
                                     @Override
                                     public void onClick(View view) {
 
-                                        mainActivity.startActivity(new Intent(mainActivity.getApplicationContext(),Temperature.class).putExtra("location", inputLocation).putExtra("temperature", inputTemp));
-                                        mainActivity.saveData();
-                                        mainActivity.finish();
+                                        activity.startActivity(new Intent(activity.getApplicationContext(),Temperature.class).putExtra("location", inputLocation).putExtra("temperature", inputTemp));
+
 
                                     }
                                 });
@@ -109,7 +110,7 @@ public class TemperatureManager extends HazardManager {
                                 //shield.setActivated(false);
                                 //warning.setText("You are not exposed to any hazards!");
                                 newButton.setVisibility(View.INVISIBLE);
-                                mainActivity.hazardsExposed[2] = false;
+                                hazardsExposed[2] = false;
                             }
                         } catch (JSONException e) {
                             //checkTemperature(location);
@@ -120,11 +121,11 @@ public class TemperatureManager extends HazardManager {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(mainActivity, "UV code failed", Toast.LENGTH_SHORT);
+                        //Toast.makeText(mainActivity, "UV code failed", Toast.LENGTH_SHORT);
                     }
                 });
 
-        MySingleton.getInstance(mainActivity).addToRequestQueue(jsonObjectRequest);
+        MySingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
 
     }
 }

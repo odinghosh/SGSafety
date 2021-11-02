@@ -1,18 +1,17 @@
 package com.example.newsgsafety;
 
+import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 public abstract class HazardManager {
     public String url;
-    public MainActivity mainActivity;
-    public boolean enabled;
-    public HazardManager(String url, MainActivity mainActivity){
+    public HazardManager(String url){
         this.url = url;
-        this.mainActivity = mainActivity;
-
     }
 
-    public abstract void checkHazard(Location location);
+    public abstract void checkHazard(Location location, boolean hazardsExposed[], AppCompatActivity activity);
 }

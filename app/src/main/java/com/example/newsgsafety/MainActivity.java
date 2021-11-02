@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity{
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String PANIC_REQUEST = "panicLocation";
     public boolean[] boolSettings;
-    public boolean[] hazardsExposed = {false,false,false,false};
+    public boolean[] hazardsExposed;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     private ArrayList<HazardManager> hazardManagersList;
@@ -80,6 +80,10 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         //loadData();
         boolSettings = new boolean[4];
+        hazardsExposed = new boolean[4];
+        for(int i=0;i<4;i++){
+            hazardsExposed[i] = false;
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -88,10 +92,6 @@ public class MainActivity extends AppCompatActivity{
         hazardFactory = new HazardFactory();
         hazardManagersList = new ArrayList<HazardManager>();
         hazardFactory.makeHazardManagers(boolSettings, MainActivity.this, hazardManagersList);
-
-
-
-
 
         ImageView outline = findViewById(R.id.outlineIcon);
         ImageView shield = findViewById(R.id.shieldIcon);
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity{
                 Location location = locationResult.getLocations().get(0);
 
                 for(int i=0;i<hazardManagersList.size();i++){
-                    hazardManagersList.get(i).checkHazard(location);
+                    hazardManagersList.get(i).checkHazard(location, hazardsExposed, MainActivity.this);
                 }
                 System.out.println(hazardManagersList.size());
 
@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 if(MainActivity.this.panicSent == false) {
                     MainActivity.this.panicSent = true;
+                    saveData();
                     startLocationUpdates(alertLocationCallback);
 
                     locationSharing.toggle();
@@ -197,6 +198,7 @@ public class MainActivity extends AppCompatActivity{
                 cancelPanicRequest();
 
                 panicSent = false;
+                saveData();
                 bannerText.setText("Welcome User!");
 
             }

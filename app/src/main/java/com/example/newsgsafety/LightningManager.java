@@ -1,11 +1,14 @@
 package com.example.newsgsafety;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -17,24 +20,22 @@ import org.json.JSONObject;
 
 public class LightningManager extends HazardManager {
 
-    public LightningManager(String url, MainActivity mainActivity){
-        super(url, mainActivity);
+    public LightningManager(String url){
+        super(url);
     }
     @Override
-    public void checkHazard(Location location) {
+    public void checkHazard(Location location, boolean hazardsExposed[], AppCompatActivity activity) {
+
         String url = this.url;
-
-
-        ImageView newButton = mainActivity.findViewById(R.id.imageView2);
-
-
+        ImageView newButton = activity.findViewById(R.id.imageView2);
+        ImageView outline = activity.findViewById(R.id.outlineIcon);
+        ImageView shield = activity.findViewById(R.id.shieldIcon);
+        TextView warning = activity.findViewById(R.id.textView3);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        ImageView outline = mainActivity.findViewById(R.id.outlineIcon);
-                        ImageView shield = mainActivity.findViewById(R.id.shieldIcon);
-                        TextView warning = mainActivity.findViewById(R.id.textView3);
+
 
 
                         try {
@@ -71,18 +72,16 @@ public class LightningManager extends HazardManager {
                                 newButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
+                                        activity.startActivity(new Intent(activity.getApplicationContext(),Flood.class).putExtra("location", inputLocation));
 
-                                        mainActivity.startActivity(new Intent(mainActivity.getApplicationContext(),Flood.class).putExtra("location", inputLocation));
-                                        mainActivity.saveData();
-                                        mainActivity.finish();
 
                                     }
                                 });
                                 newButton.setVisibility(View.VISIBLE);
-                                mainActivity.hazardsExposed[1] = true;
+                                hazardsExposed[1] = true;
                             }else{
                                 newButton.setVisibility(View.INVISIBLE);
-                                mainActivity.hazardsExposed[1] = false;
+                                hazardsExposed[1] = false;
                             }
                         } catch (JSONException e) {
                             //checkRain(location);
@@ -93,11 +92,11 @@ public class LightningManager extends HazardManager {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(mainActivity, "UV code failed", Toast.LENGTH_SHORT);
+                        //Toast.makeText(mainActivity, "UV code failed", Toast.LENGTH_SHORT);
                     }
                 });
 
-        MySingleton.getInstance(mainActivity).addToRequestQueue(jsonObjectRequest);
+        MySingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
 
     }
 }

@@ -1,5 +1,6 @@
 package com.example.newsgsafety;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.view.View;
@@ -7,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -24,15 +27,17 @@ import java.util.Calendar;
 
 public class DengueManager extends HazardManager {
 
-    public DengueManager(String url, MainActivity mainActivity){
-        super(url, mainActivity);
+    public DengueManager(String url){
+        super(url);
     }
     @Override
-    public void checkHazard(Location location) {
-        ImageView outline = mainActivity.findViewById(R.id.outlineIcon);
-        ImageView shield = mainActivity.findViewById(R.id.shieldIcon);
-        TextView warning = mainActivity.findViewById(R.id.textView3);
-        ImageView newButton = mainActivity.findViewById(R.id.imageView3);
+    public void checkHazard(Location location, boolean hazardsExposed[], AppCompatActivity activity) {
+
+        ImageView outline = activity.findViewById(R.id.outlineIcon);
+        ImageView shield = activity.findViewById(R.id.shieldIcon);
+        TextView warning = activity.findViewById(R.id.textView3);
+        ImageView newButton = activity.findViewById(R.id.imageView3);
+        //ImageView test = findViewById(R.id.imageView3);
 
 
         Calendar calendar = Calendar.getInstance();
@@ -41,14 +46,13 @@ public class DengueManager extends HazardManager {
 
 
 
-        String url = String.format("https://geo.data.gov.sg/dengue-cluster/2021/%02d/01/geojson/dengue-cluster.geojson",month);
+        String url = String.format("https://geo.data.gov.sg/dengue-cluster/2021/10/01/geojson/dengue-cluster.geojson",month);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
                         boolean inDengueArea = false;
-                        LinearLayout hazardList = mainActivity.findViewById(R.id.hazardList);
 
                         //System.out.println(response.toString());
                         GeoJsonParser g = new GeoJsonParser(response);
@@ -59,7 +63,7 @@ public class DengueManager extends HazardManager {
                                 shield.setActivated(true);
                                 outline.setActivated(true);
                                 warning.setText("Exposed to hazards");
-                                mainActivity.hazardsExposed[3] = true;
+                                hazardsExposed[3] = true;
                                 String area = feature.getProperty("Description");
                                 int i;
                                 int j = area.indexOf("</td>");
@@ -73,9 +77,9 @@ public class DengueManager extends HazardManager {
                                     @Override
                                     public void onClick(View view) {
 
-                                        mainActivity.startActivity(new Intent(mainActivity.getApplicationContext(), Dengue.class).putExtra("cases", numCases));
-                                        mainActivity.saveData();
-                                        mainActivity.finish();
+                                        activity.startActivity(new Intent(activity.getApplicationContext(), Dengue.class).putExtra("cases", numCases));
+                                        //saveData();
+                                        //finish();
 
                                     }
                                 });
@@ -89,7 +93,7 @@ public class DengueManager extends HazardManager {
 
                         if(!inDengueArea){
                             newButton.setVisibility(View.INVISIBLE);
-                            mainActivity.hazardsExposed[3] = false;
+                            hazardsExposed[3] = false;
                         }
 
 
@@ -102,11 +106,11 @@ public class DengueManager extends HazardManager {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(mainActivity, "UV code failed", Toast.LENGTH_SHORT);
+                        //Toast.makeText(this, "UV code failed", Toast.LENGTH_SHORT);
                     }
                 });
 
-        MySingleton.getInstance(mainActivity).addToRequestQueue(jsonObjectRequest);
+        MySingleton.getInstance(activity.getApplicationContext()).addToRequestQueue(jsonObjectRequest);
 
     }
 }
