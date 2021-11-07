@@ -55,6 +55,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * This class implements the Home Page of the application.
+ */
+
 public class MainActivity extends AppCompatActivity{
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -153,9 +157,6 @@ public class MainActivity extends AppCompatActivity{
             }
 
 
-                    //fusedLocationClient.removeLocationUpdates(apiLocationCallback);
-
-
         };
 
 
@@ -225,6 +226,10 @@ public class MainActivity extends AppCompatActivity{
         super.onDestroy();
         fusedLocationClient.removeLocationUpdates(apiLocationCallback);
     }
+
+    /**
+     * This method is run when a user wants to cancel a panic request
+     */
 
     public void cancelPanicRequest(){
 
@@ -361,6 +366,11 @@ public class MainActivity extends AppCompatActivity{
             }
         });
     }
+
+    /**
+     * This method is used to save data about the state of the homepage when the user navigates
+     * to a different page
+     */
     public void saveData(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -373,10 +383,10 @@ public class MainActivity extends AppCompatActivity{
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
         panicRequestSent   = sharedPreferences.getString(PANIC_REQUEST, "");
         panicSent = sharedPreferences.getBoolean("panic_sent", false);
-        boolSettings[0] = sharedPreferences.getBoolean("checkUV", false);
-        boolSettings[1] = sharedPreferences.getBoolean("checkFlood", false);
-        boolSettings[2] = sharedPreferences.getBoolean("checkTemp", false);
-        boolSettings[3] = sharedPreferences.getBoolean("checkDengue", false);
+        boolSettings[0] = sharedPreferences.getBoolean("checkUV", true);
+        boolSettings[1] = sharedPreferences.getBoolean("checkFlood", true);
+        boolSettings[2] = sharedPreferences.getBoolean("checkTemp", true);
+        boolSettings[3] = sharedPreferences.getBoolean("checkDengue", true);
 
     }
 }

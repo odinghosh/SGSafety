@@ -37,7 +37,7 @@ public class DengueManager extends HazardManager {
         ImageView shield = activity.findViewById(R.id.shieldIcon);
         TextView warning = activity.findViewById(R.id.textView3);
         ImageView newButton = activity.findViewById(R.id.imageView3);
-        //ImageView test = findViewById(R.id.imageView3);
+
 
 
         Calendar calendar = Calendar.getInstance();
@@ -67,7 +67,7 @@ public class DengueManager extends HazardManager {
                                 String area = feature.getProperty("Description");
                                 int i;
                                 int j = area.indexOf("</td>");
-                                //String locationArea = area.substring(i+4, j);
+
                                 String numArea = area.substring(j + 5);
                                 i = numArea.indexOf("<td>");
                                 j = numArea.indexOf("</td>");
@@ -78,8 +78,7 @@ public class DengueManager extends HazardManager {
                                     public void onClick(View view) {
 
                                         activity.startActivity(new Intent(activity.getApplicationContext(), Dengue.class).putExtra("cases", numCases));
-                                        //saveData();
-                                        //finish();
+
 
                                     }
                                 });

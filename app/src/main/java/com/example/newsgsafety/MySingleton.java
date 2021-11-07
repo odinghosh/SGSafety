@@ -6,6 +6,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * This class is used to implement a queue for JSON requests to hazard apis
+ */
+
 public class MySingleton {
     private static MySingleton instance;
     private RequestQueue requestQueue;

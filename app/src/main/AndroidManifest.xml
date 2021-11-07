@@ -14,9 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NewSGSafety">
         <activity
-            android:name=".ConfirmPanicSend"
-            android:exported="true" />
-        <activity
             android:name=".Lightning"
             android:exported="true" />
         <activity

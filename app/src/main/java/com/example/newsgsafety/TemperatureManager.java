@@ -26,11 +26,8 @@ public class TemperatureManager extends HazardManager {
     }
     @Override
     public void checkHazard(Location location, boolean hazardsExposed[], AppCompatActivity activity) {
-        //startLocationUpdates();
-        String url = this.url;
-//        LocationResult locationResult = null;
-//        Location location = locationResult.getLastLocation();
 
+        String url = this.url;
         ImageView newButton = activity.findViewById(R.id.imageView4);
         ImageView outline = activity.findViewById(R.id.outlineIcon);
         ImageView shield = activity.findViewById(R.id.shieldIcon);
@@ -52,14 +49,12 @@ public class TemperatureManager extends HazardManager {
                             System.out.println(len);
 
                             for (int i = 0; i < len; i++) {
-                                //System.out.printf("i = %d\n", i);
-                                //String forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("value");
+
                                 String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("station_id");
                                 System.out.println(area);
                                 double lat = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getJSONObject("location").getDouble("latitude");
                                 double lon = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getJSONObject("location").getDouble("longitude");
-                                //s = 10;   //for testing
-                                //System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
+
 
                                 if (Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon) < min_dist){ //find closest location to user
                                     min_dist = Math.abs(temp_lat - lat) + Math.abs(temp_lon - lon);
@@ -71,20 +66,16 @@ public class TemperatureManager extends HazardManager {
                             //closest_forecast = 35;    //test
                             String location = "";
                             for (int i = 0; i < len; i++) {
-                                //System.out.printf("i = %d\n", i);
-                                //String forecast = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("value");
-                                //String area = response.getJSONArray("items").getJSONObject(0).getJSONArray("readings").getJSONObject(i).getString("station_id");
+
                                 String id = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getString("id");
                                 location  = response.getJSONObject("metadata").getJSONArray("stations").getJSONObject(i).getString("name");
                                 if(id.equals(area)){
                                     break;
                                 }
-                                //s = 10;   //for testing
-                                //System.out.printf("\narea = %s, latitude = %f, longitude = %f, forecast = %s\n", area, lat, lon, forecast);
+
                             }
                             System.out.println(location);
-                            if (closest_forecast > 25){
-                                //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
+                            if (closest_forecast > 30){
                                 System.out.println(area);
                                 outline.setActivated(true);
                                 shield.setActivated(true);
@@ -105,10 +96,7 @@ public class TemperatureManager extends HazardManager {
                                 });
 
                             }else{
-                                //System.out.printf("\n1)Area = %s, CLOSEST FORECAST = %s\n", area, closest_forecast); //test
-                                //outline.setActivated(false);
-                                //shield.setActivated(false);
-                                //warning.setText("You are not exposed to any hazards!");
+
                                 newButton.setVisibility(View.INVISIBLE);
                                 hazardsExposed[2] = false;
                             }

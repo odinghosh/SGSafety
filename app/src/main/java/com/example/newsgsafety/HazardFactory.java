@@ -1,6 +1,11 @@
 package com.example.newsgsafety;
 import java.util.ArrayList;
 
+/**
+ * This class implements a factory pattern. This class generates new Hazard Manager classes
+ * depending on the user's preferences
+ */
+
 public class HazardFactory {
 
     public void makeHazardManagers(boolean[] boolSettings, MainActivity mainActivity, ArrayList<HazardManager> hazardManagersList){
@@ -26,7 +31,6 @@ public class HazardFactory {
             }
         }
 
-        //return hazardManagersList;
 
     }
 }
